@@ -1,24 +1,16 @@
-#include <SFML/Graphics.hpp>
+#include"Game.h"
+#include<stdlib.h>
+#include<time.h>
+
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(1080, 720), "63010849 Worawich Tangpojthaweeporn");
-	
-	sf::CircleShape shape(100.f);
-	shape.setFillColor(sf::Color::Magenta);
-	
-	while (window.isOpen())
-	{
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-				window.close();
-		}
-		window.clear();
-		window.draw(shape);
-		window.display();
-	}
+	srand(time(0));
 
+	Game game;
+
+	game.run();
+
+	// end game
 	return 0;
 }
