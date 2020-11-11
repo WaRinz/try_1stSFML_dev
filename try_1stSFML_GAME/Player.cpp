@@ -1,5 +1,5 @@
 #include "Player.h"
-#include "Game.h"
+
 
 	//---- PRIVATE ( CAN'T INCLUDE ) ----
 
@@ -7,8 +7,14 @@ void Player::initialVariables()
 {
 	this->animationState = PLAYER_ANIMATION_STATES::IDLE;
 
+	// attack per time
 	this->attackCooldownMax = 10.f;
 	this->attackCooldown = this->attackCooldownMax;
+
+	// HP
+	this->hpMax = 50;
+	this->hp = this->hpMax;
+	
 }
 
 void Player::initialTexture()// picture
@@ -24,6 +30,7 @@ void Player::initialSprite()// box to put picture
 {
 	/*set texture to sprite*/
 	this->sprite.setTexture(this->texture);
+	this->sprite.setPosition(sf::Vector2f(40.f, 350.f));
 
 	/* crop frame -> animations */
 	this->currentFrame = sf::IntRect(0, 0, 157, 164);
@@ -77,6 +84,16 @@ sf::FloatRect Player::getBounds() const
 	return this->sprite.getGlobalBounds();
 }
 
+const int& Player::getHp() const
+{
+	return this->hp;
+}
+
+const int& Player::getHpMax() const
+{
+	return this->hpMax;
+}
+
 void Player::setPosition(const sf::Vector2f pos)
 {
 	this->sprite.setPosition(pos);
@@ -85,6 +102,18 @@ void Player::setPosition(const sf::Vector2f pos)
 void Player::setPosition(const float x, float y)
 {
 	this->sprite.setPosition(x, y);
+}
+
+void Player::setHP(const int hp)
+{
+	this->hp = hp;
+}
+
+void Player::loseHP(const int value)
+{
+	this->hp -= value;
+	if (this->hp < 0)
+		this->hp = 0;
 }
 
 void Player::move(const float dirX, const float dirY)
