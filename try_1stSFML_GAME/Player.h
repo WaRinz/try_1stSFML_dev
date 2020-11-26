@@ -5,7 +5,7 @@
 #include<SFML/Network.hpp>
 #include<SFML/Window.hpp>
 #include<SFML/System.hpp>
-#include<SFML/Main.hpp>
+
 
 enum PLAYER_ANIMATION_STATES {IDLE = 0, MOVING_LEFT, MOVING_RIGHT, MOVING_UP, MOVING_DOWN};
  

@@ -6,25 +6,44 @@ void Enemies::initialVariables()
 	this->type		= 0;
 	this->hpmax		= static_cast<int>(this->pointCount);
 	this->hp		= this->hpmax;
-	this->damage	= this->pointCount;
-	this->points		= this->pointCount;
+	this->damage	= 20.f;
+	this->points	= 500.f;
 
-	this->speed		= static_cast<float>(this->pointCount / 2);
+	this->speed		= 7.f;
+}
+
+void Enemies::initialTexture()
+{
+	if (!this->enemyTex.loadFromFile("Textures/flap.png"))
+	{
+		std::cout << "ERROR::Flappy::INITIAL TEXTURE::could not load." << "\n";
+	}
+}
+
+void Enemies::initialSprite()
+{
+	this->enemySprite.setTexture(this->enemyTex);
+	this->enemySprite.scale(0.5f, 0.5f);
 }
 
 void Enemies::initialShape()
 {
+	/*
 	this->shape.setRadius(this->pointCount * 5);
 	this->shape.setPointCount(this->pointCount);
 	this->shape.setFillColor(sf::Color(rand() % 300 + 1, rand() % 30 + 1, 400)); //R, G, B color
+	*/;
 }
 
 Enemies::Enemies(float posX, float posY)
 {
 	
 	this->initialVariables();
-	this->initialShape();
-	this->shape.setPosition(posX, posY);
+	this->initialTexture();
+	this->initialSprite();
+	
+	//this->initialShape();
+	this->enemySprite.setPosition(posX, posY);
 }
 
 Enemies::~Enemies()
@@ -34,7 +53,7 @@ Enemies::~Enemies()
 
 const sf::FloatRect Enemies::getBounds() const
 {
-	return this->shape.getGlobalBounds();
+	return this->enemySprite.getGlobalBounds();
 }
 
 const int& Enemies::getPoints() const
@@ -52,10 +71,10 @@ const int& Enemies::getDamage() const
 // function
 void Enemies::update()
 {
-	this->shape.move(-this->speed, 0.f);
+	this->enemySprite.move(-this->speed, 0.f);
 }
 
 void Enemies::render(sf::RenderTarget& target)
 {
-	target.draw(this->shape);
+	target.draw(this->enemySprite);
 }

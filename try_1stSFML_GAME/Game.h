@@ -4,15 +4,19 @@
 #include<SFML/Audio.hpp>
 #include<SFML/Window.hpp>
 #include<SFML/Network.hpp>
-#include<SFML/Main.hpp>
+
 
 #include<map>
 #include<string>
 #include<sstream>
+#include<vector>
 
 #include"Player.h"
 #include"Bullet.h"
 #include"Enemies.h"
+#include"RedEnemy.h"
+#include"BlueEnemy.h"
+#include"Potion.h"
 
 
 class Game
@@ -70,12 +74,29 @@ private:
 	sf::RectangleShape playerHpBar;			//MAX
 	sf::RectangleShape playerHpBarBack;		//DECREASE
 
-	/* ENEMIES */
+	/* ENEMIES --- FLAPPY */
 	float spawnTimer;
 	float spawnTimerMax;
 	std::vector<Enemies*> enemies;
 
+	/* ENEMIES --- RED BIRD */
+	float RedspawnTimer;
+	float RedspawnTimerMax;
+	std::vector<RedEnemy*> redenemy;
+
+	/* ENEMIES --- BLUE BIRD */
+	float BluespawnTimer;
+	float BluespawnTimerMax;
+	std::vector<BlueEnemy*> blueenemy;
 	
+
+	/* POTION --- HEALTH */
+	float PospawnTimer;
+	float PospawnTimerMax;
+	std::vector<Potion*> potion;
+
+
+
 	void initialWindow();
 	void initialTextures();
 
@@ -85,11 +106,18 @@ private:
 	void initialBGMenu();
 
 	void initialSystem();
+
+	// OBJECT
 	void initialPlayer();
 	void initialEnemies();
+	void initialRedEnemy();
+	void initialBlueEnemy();
+	void initialPotion();
+
 	void initialSound();
 	void initialHaha();
 
+	// CLEAN ALL
 	void LobThangMod();
 
 	
@@ -110,8 +138,13 @@ public:
 	void updatePollEvents();
 	void updateInput();
 
+	// UPDATE OBJECT
 	void updateBullets();
 	void updateEnemies();
+	void updateRedEnemy();
+	void updateBlueEnemy();
+	void updatePotion();
+
 	void updateCombat();
 
 	void updateCollision();

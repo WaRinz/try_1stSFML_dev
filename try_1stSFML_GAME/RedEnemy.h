@@ -1,5 +1,5 @@
-#ifndef ENEMIES_H
-#define ENEMIES_H
+#ifndef REDENEMIES_H
+#define REDENEMIES_H
 
 #include<iostream>
 #include<SFML/Graphics.hpp>
@@ -10,17 +10,22 @@
 
 
 
-class Enemies
+class RedEnemy
 {
-private :
+private:
 
 	unsigned pointCount;
 	sf::CircleShape shape; // sprite
 
-	// ADD NEW TEXTURE & SPRITE --> Yellow Flappy
-	sf::Texture enemyTex;
-	sf::Sprite  enemySprite;
+	// Red Bird
+	sf::Texture redTex;
+	sf::Sprite  redSprite;
+	bool RedMove;
 
+	// Animations
+	sf::IntRect redcurrentFrame;
+	// time of animations
+	sf::Clock animationTimer;
 
 	int type;
 	int hp;
@@ -36,12 +41,13 @@ private :
 	void initialVariables();
 	void initialTexture();
 	void initialSprite();
+	void initialAnimations();
 	void initialShape();
-	
-public :
-	Enemies(float posX, float posY);
 
-	virtual ~Enemies();
+public:
+	RedEnemy(float posX, float posY);
+
+	virtual ~RedEnemy();
 
 	// access
 	const sf::FloatRect getBounds() const;
@@ -53,9 +59,10 @@ public :
 
 	// functions
 
-
+	void updateAnimations();
+	void updateMovement();
 	void update();
 	void render(sf::RenderTarget& target);
 };
 
-#endif // !ENEMIES_H
+#endif // !REDENEMIES_H

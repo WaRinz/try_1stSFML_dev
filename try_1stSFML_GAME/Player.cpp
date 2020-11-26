@@ -12,7 +12,7 @@ void Player::initialVariables()
 	this->attackCooldown = this->attackCooldownMax;
 
 	// HP
-	this->hpMax = 50;
+	this->hpMax = 100;
 	this->hp = this->hpMax;
 	
 }
@@ -113,7 +113,14 @@ void Player::loseHP(const int value)
 {
 	this->hp -= value;
 	if (this->hp < 0)
+	{
 		this->hp = 0;
+	}
+
+	if (this->hp > 100)
+	{
+		this->hp = 100;
+	}
 }
 
 void Player::move(const float dirX, const float dirY)

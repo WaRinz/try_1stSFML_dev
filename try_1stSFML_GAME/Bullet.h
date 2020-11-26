@@ -8,7 +8,7 @@
 #include<SFML/Network.hpp>
 #include<SFML/Window.hpp>
 #include<SFML/System.hpp>
-#include<SFML/Main.hpp>
+
 
 
 class Bullet

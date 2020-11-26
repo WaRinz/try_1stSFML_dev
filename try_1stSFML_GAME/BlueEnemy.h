@@ -1,5 +1,5 @@
-#ifndef ENEMIES_H
-#define ENEMIES_H
+#ifndef BLUEENEMIES_H
+#define BLUEENEMIES_H
 
 #include<iostream>
 #include<SFML/Graphics.hpp>
@@ -10,17 +10,22 @@
 
 
 
-class Enemies
+class BlueEnemy
 {
-private :
+private:
 
 	unsigned pointCount;
 	sf::CircleShape shape; // sprite
 
-	// ADD NEW TEXTURE & SPRITE --> Yellow Flappy
-	sf::Texture enemyTex;
-	sf::Sprite  enemySprite;
+	// Red Bird
+	sf::Texture blueTex;
+	sf::Sprite  blueSprite;
+	bool BlueMove;
 
+	// Animations
+	sf::IntRect bluecurrentFrame;
+	// time of animations
+	sf::Clock BanimationTimer;
 
 	int type;
 	int hp;
@@ -36,12 +41,13 @@ private :
 	void initialVariables();
 	void initialTexture();
 	void initialSprite();
+	void initialAnimations();
 	void initialShape();
-	
-public :
-	Enemies(float posX, float posY);
 
-	virtual ~Enemies();
+public:
+	BlueEnemy(float posX, float posY);
+
+	virtual ~BlueEnemy();
 
 	// access
 	const sf::FloatRect getBounds() const;
@@ -53,9 +59,10 @@ public :
 
 	// functions
 
-
+	void updateAnimations();
+	void updateMovement();
 	void update();
 	void render(sf::RenderTarget& target);
 };
 
-#endif // !ENEMIES_H
+#endif // !BLUEENEMIES_H

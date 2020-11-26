@@ -84,7 +84,7 @@ void Game::initialBGSound()
 
 void Game::initialBGMenu()
 {
-	if (!this->menuTexture.loadFromFile("Textures/skyy.png"))
+	if (!this->menuTexture.loadFromFile("Textures/menuART001.png"))
 	{
 		std::cout << "ERROR::Menu Background ::could not load." << "\n";
 	}
@@ -107,6 +107,24 @@ void Game::initialEnemies()
 {
 	this->spawnTimerMax = 50.f;
 	this->spawnTimer = this->spawnTimerMax;
+}
+
+void Game::initialRedEnemy()
+{
+	this->RedspawnTimerMax = 5.f;
+	this->RedspawnTimer = this->RedspawnTimerMax;
+}
+
+void Game::initialBlueEnemy()
+{
+	this->BluespawnTimerMax = 10.f;
+	this->BluespawnTimer = this->BluespawnTimerMax;
+}
+
+void Game::initialPotion()
+{
+	this->PospawnTimerMax = 150.f;
+	this->PospawnTimer = this->PospawnTimerMax;
 }
 
 void Game::initialSound()
@@ -137,23 +155,55 @@ void Game::initialHaha()
 
 void Game::LobThangMod()
 {
-	for (auto& enemy : this->enemies)
+	// yellow flappy
+	for (auto& enem : this->enemies)
 	{
 		// delete enemies
-		delete enemy;
+		delete enem;
 
 	}
-	this->enemies.clear();
+	this->enemies.clear();		// flappy
+	
+	// red bird
+	for (auto& redene : this->redenemy)
+	{
+		// delete red enemies
+		delete redene;
 
-	this->player->setHP(50);
+	}
+	this->redenemy.clear();		// red bird
+
+	// blue bird
+	for (auto* blueene : this->blueenemy)
+	{
+		// delete blue enemies
+		delete blueene;
+	}
+	this->blueenemy.clear();	// blue bird
+
+	// potion
+	for (auto& po : this->potion)
+	{
+		// delete potion
+		delete po;
+	}
+	this->potion.clear();		// potion
+
+
+	// player HP start set to 100
+	this->player->setHP(100);
+	
+	// point begin = 0
 	this->points = 0;
+
+	// bullet
 	for (auto& bull : this->bullets)
 	{
 		// delete enemies
 		delete bull;
 
 	}
-	this->bullets.clear();
+	this->bullets.clear();		// bullet
 }
 
 void Game::initialSystem()
@@ -182,6 +232,9 @@ Game::Game()
 
 	this->initialPlayer();
 	this->initialEnemies();
+	this->initialRedEnemy();
+	this->initialBlueEnemy();
+	this->initialPotion();
 
 	
 }
@@ -201,12 +254,26 @@ Game::~Game()
 	{
 		delete i;
 	}
-	//delete enemies
+	//delete enemies yellow flappy
 	for (auto* i : this->enemies)
 	{
 		delete i;
 	}
-
+	//delete red bird
+	for (auto* i : this->redenemy)
+	{
+		delete i;
+	}
+	//delete blue bird
+	for (auto* i : this->blueenemy)
+	{
+		delete i;
+	}
+	//delete potion
+	for (auto* i : this->potion)
+	{
+		delete i;
+	}
 }
 
 void Game::checkStart()
@@ -247,7 +314,7 @@ void Game::updatePollEvents()
 			this->isGameStart = true;
 			this->music.play();
 		}
-		if (event.Event::KeyPressed && event.Event::key.code == sf::Keyboard::L)
+		if (event.Event::KeyPressed && event.Event::key.code == sf::Keyboard::U)
 		{
 			this->isGameStart = false;
 			this->LobThangMod();
@@ -326,10 +393,10 @@ void Game::updateBullets()
 	}
 }
 
-void Game::updateEnemies()
+void Game::updateEnemies() // yellow flappy
 {
 	// enemies spawning
-	this->spawnTimer += 0.5f;
+	this->spawnTimer += 0.1f;
 	if (this->spawnTimer >= this->spawnTimerMax)
 	{
 		this->enemies.push_back(new Enemies(1700.f, rand() % this->window->getSize().y + 100.f));
@@ -338,37 +405,158 @@ void Game::updateEnemies()
 	}
 
 	// update
-	unsigned counter = 0;
-	for (auto* enemies : this->enemies)
+	unsigned Fcounter = 0;
+	for (auto* enemie : this->enemies)
 	{
-		enemies->update();
+		enemie->update();
 
 		// enemies culling (top screen)
-		if (enemies->getBounds().left < this->window->getSize().x - 1650.f)
+		if (enemie->getBounds().left < this->window->getSize().y - 1700.f)
 		{
 			// delete enemies
-			delete this->enemies.at(counter);
-			this->enemies.erase(this->enemies.begin() + counter);
+			delete this->enemies.at(Fcounter);
+			this->enemies.erase(this->enemies.begin() + Fcounter);
 
 		}
 
 		// Enemies & Player colission
-		else if (enemies->getBounds().intersects(this->player->getBounds()))
+		else if (enemie->getBounds().intersects(this->player->getBounds()))
 		{
 			// delete enemy W H I L E   H I T   T H E   P L A Y E R 
-			this->player->loseHP(this->enemies.at(counter)->getDamage());
-			delete this->enemies.at(counter);
-			this->enemies.erase(this->enemies.begin() + counter);
+			this->player->loseHP(this->enemies.at(Fcounter)->getDamage());
+			delete this->enemies.at(Fcounter);
+			this->enemies.erase(this->enemies.begin() + Fcounter);
 	
 		}
 
-		++counter;
+		++Fcounter;
 	}
 
 }
 
-void Game::updateCombat()
+void Game::updateRedEnemy() // red bird
 {
+	// redenemy spawning
+	this->RedspawnTimer += 0.1f;
+	if (this->RedspawnTimer >= this->RedspawnTimerMax)
+	{
+		this->redenemy.push_back(new RedEnemy(1700.f, rand() % this->window->getSize().y + 100.f));
+		this->RedspawnTimer = 0.f;
+
+	}
+
+	// update
+	unsigned Rcounter = 0;
+	for (auto* redenem : this->redenemy)
+	{
+		redenem->update();
+
+		// enemies culling (top screen)
+		if (redenem->getBounds().left < this->window->getSize().y - 1700.f)
+		{
+			// delete enemies
+			delete this->redenemy.at(Rcounter);
+			this->redenemy.erase(this->redenemy.begin() + Rcounter);
+
+		}
+
+		// Enemies & Player colission
+		else if (redenem->getBounds().intersects(this->player->getBounds()))
+		{
+			// delete enemy W H I L E   H I T   T H E   P L A Y E R 
+			this->player->loseHP(this->redenemy.at(Rcounter)->getDamage());
+			delete this->redenemy.at(Rcounter);
+			this->redenemy.erase(this->redenemy.begin() + Rcounter);
+
+		}
+
+		++Rcounter;
+	}
+}
+
+void Game::updateBlueEnemy()
+{
+	// blueenemy spawning
+	this->BluespawnTimer += 0.1f;
+	if (this->BluespawnTimer >= this->BluespawnTimerMax)
+	{
+		this->blueenemy.push_back(new BlueEnemy(1700.f, rand() % this->window->getSize().y + 100.f));
+		this->BluespawnTimer = 0.f;
+
+	}
+
+	// update
+	unsigned Bcounter = 0;
+	for (auto* blueenem : this->blueenemy)
+	{
+		blueenem->update();
+
+		// enemies culling (top screen)
+		if (blueenem->getBounds().left < this->window->getSize().y - 1700.f)
+		{
+			// delete enemies
+			delete this->blueenemy.at(Bcounter);
+			this->blueenemy.erase(this->blueenemy.begin() + Bcounter);
+
+		}
+
+		// Enemies & Player colission
+		else if (blueenem->getBounds().intersects(this->player->getBounds()))
+		{
+			// delete enemy W H I L E   H I T   T H E   P L A Y E R 
+			this->player->loseHP(this->blueenemy.at(Bcounter)->getDamage());
+			delete this->blueenemy.at(Bcounter);
+			this->blueenemy.erase(this->blueenemy.begin() + Bcounter);
+
+		}
+
+		++Bcounter;
+	}
+}
+
+void Game::updatePotion() // potion
+{
+	// potion spawning
+	this->PospawnTimer += 0.1f;
+	if (this->PospawnTimer >= this->PospawnTimerMax)
+	{
+		this->potion.push_back(new Potion(1700.f, rand() % this->window->getSize().y + 100.f));
+		this->PospawnTimer = 0.f;
+
+	}
+
+	// update
+	unsigned Pcounter = 0;
+	for (auto* pot : this->potion)
+	{
+		pot->update();
+
+		// enemies culling (top screen)
+		if (pot->getBounds().left < this->window->getSize().y - 1700.f)
+		{
+			// delete enemies
+			delete this->potion.at(Pcounter);
+			this->potion.erase(this->potion.begin() + Pcounter);
+
+		}
+
+		// Enemies & Player colission
+		else if (pot->getBounds().intersects(this->player->getBounds()))
+		{
+			// delete enemy W H I L E   H I T   T H E   P L A Y E R 
+			this->player->loseHP(this->potion.at(Pcounter)->getDamage());
+			delete this->potion.at(Pcounter);
+			this->potion.erase(this->potion.begin() + Pcounter);
+
+		}
+
+		++Pcounter;
+	}
+}
+
+void Game::updateCombat() // Shooting & Get Points ----- After shooting diaapear
+{
+	// Yellow Flappy
 	for (int i = 0; i < this->enemies.size(); ++i)
 	{
 		bool enemy_removed = false;
@@ -388,7 +576,72 @@ void Game::updateCombat()
 			}
 		}
 	}
+
+	// Red Bird
+	for (int Ri = 0; Ri < this->redenemy.size(); ++Ri)
+	{
+		bool Renemy_removed = false;
+		this->redenemy[Ri]->update();
+
+		for (size_t Rk = 0; Rk < this->bullets.size() && !Renemy_removed; Rk++) // has been shot
+		{
+
+			if (this->bullets[Rk]->getBounds().intersects(this->redenemy[Ri]->getBounds())) // IF bullet touch the enemies
+			{
+				this->points += this->redenemy[Ri]->getPoints();
+
+				this->bullets.erase(this->bullets.begin() + Rk);
+				this->redenemy.erase(this->redenemy.begin() + Ri);
+
+				Renemy_removed = true;
+			}
+		}
+	}
+
+	// Blue Bird
+	for (int Bi = 0; Bi < this->blueenemy.size(); ++Bi)
+	{
+		bool Benemy_removed = false;
+		this->blueenemy[Bi]->update();
+
+		for (size_t Bk = 0; Bk < this->bullets.size() && !Benemy_removed; Bk++) // has been shot
+		{
+
+			if (this->bullets[Bk]->getBounds().intersects(this->blueenemy[Bi]->getBounds())) // IF bullet touch the enemies
+			{
+				this->points += this->blueenemy[Bi]->getPoints();
+
+				this->bullets.erase(this->bullets.begin() + Bk);
+				this->blueenemy.erase(this->blueenemy.begin() + Bi);
+
+				Benemy_removed = true;
+			}
+		}
+	}
+
+	// Potion
+	for (int Pi = 0; Pi < this->potion.size(); ++Pi)
+	{
+		bool Penemy_removed = false;
+		this->potion[Pi]->update();
+
+		for (size_t Pk = 0; Pk < this->bullets.size() && !Penemy_removed; Pk++) // has been shot
+		{
+
+			if (this->bullets[Pk]->getBounds().intersects(this->potion[Pi]->getBounds())) // IF bullet touch the enemies
+			{
+				this->points += this->potion[Pi]->getPoints();
+
+				this->bullets.erase(this->bullets.begin() + Pk);
+				this->potion.erase(this->potion.begin() + Pi);
+
+				Penemy_removed = true;
+			}
+		}
+	}
+
 }
+
 
 void Game::updateCollision()
 {
@@ -450,11 +703,16 @@ void Game::update()
 
 		this->player->update();
 
+		// UPDATE OBJECT
 		this->updateBullets();
-
 		this->updateEnemies();
+		this->updateRedEnemy();
+		this->updateBlueEnemy();
+		this->updatePotion();
+
 
 		this->updateCombat();
+
 
 		this->updateCollision();
 
@@ -501,14 +759,26 @@ void Game::render() //render player
 		this->renderGUI();	  // text health bar
 
 
-		for (auto* bullet : this->bullets)
+		for (auto* bullet : this->bullets)		// bullets
 		{
 			bullet->render(this->window);
 		}
 
-		for (auto* enemy : this->enemies)
+		for (auto* enemie : this->enemies)		// yellow flappy
 		{
-			enemy->render(*this->window);
+			enemie->render(*this->window);
+		}
+		for (auto* redenem : this->redenemy)	// red bird
+		{
+			redenem->render(*this->window);
+		}
+		for (auto* blueenem : this->blueenemy)	// blue bird
+		{
+			blueenem->render(*this->window);
+		}
+		for (auto* pot : this->potion)
+		{
+			pot->render(*this->window);			// potion
 		}
 
 		/*display*/

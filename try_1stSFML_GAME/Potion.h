@@ -1,5 +1,5 @@
-#ifndef ENEMIES_H
-#define ENEMIES_H
+#ifndef POTION_H
+#define POTION_H
 
 #include<iostream>
 #include<SFML/Graphics.hpp>
@@ -10,16 +10,16 @@
 
 
 
-class Enemies
+class Potion
 {
-private :
+private:
 
 	unsigned pointCount;
 	sf::CircleShape shape; // sprite
 
 	// ADD NEW TEXTURE & SPRITE --> Yellow Flappy
-	sf::Texture enemyTex;
-	sf::Sprite  enemySprite;
+	sf::Texture poTex;
+	sf::Sprite  poSprite;
 
 
 	int type;
@@ -37,11 +37,11 @@ private :
 	void initialTexture();
 	void initialSprite();
 	void initialShape();
-	
-public :
-	Enemies(float posX, float posY);
 
-	virtual ~Enemies();
+public:
+	Potion(float posX, float posY);
+
+	virtual ~Potion();
 
 	// access
 	const sf::FloatRect getBounds() const;
@@ -58,4 +58,4 @@ public :
 	void render(sf::RenderTarget& target);
 };
 
-#endif // !ENEMIES_H
+#endif // !POTION_H
