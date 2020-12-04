@@ -71,13 +71,13 @@ void Game::initialBG()
 
 void Game::initialBGSound()
 {
-	if (!this->music.openFromFile("Textures/itzy.ogg"))
+	if (!this->music.openFromFile("Textures/cuphead.ogg"))
 	{
-		std::cout << "ERROR::GAME::COLD NOT LOAD - ITZY - SOUND" << "\n";
+		std::cout << "ERROR::GAME::COLD NOT LOAD - cuphead - SOUND" << "\n";
 	}
 	// initial bg sound
 	this->music.play();
-	this->music.setVolume(120.f);
+	this->music.setVolume(30.f);
 	this->music.setLoop(true);
 	
 }
@@ -111,7 +111,7 @@ void Game::initialEnemies()
 
 void Game::initialRedEnemy()
 {
-	this->RedspawnTimerMax = 5.f;
+	this->RedspawnTimerMax = 8.f;
 	this->RedspawnTimer = this->RedspawnTimerMax;
 }
 
@@ -280,6 +280,7 @@ void Game::checkStart()
 {
 	this->isGameStart = false; // Game hasn't start yet!
 
+
 }
 
 /*FUNCTIONS*/
@@ -311,15 +312,14 @@ void Game::updatePollEvents()
 			this->window->close();
 		if (event.Event::KeyPressed && event.Event::key.code == sf::Keyboard::K)
 		{
-			this->isGameStart = true;
+			this->isGameStart = true;  // check game --- start
 			this->music.play();
 		}
 		if (event.Event::KeyPressed && event.Event::key.code == sf::Keyboard::U)
 		{
-			this->isGameStart = false;
+			this->isGameStart = false; // check game --- close
 			this->LobThangMod();
 		}
-
 
 		
 	}
@@ -746,7 +746,7 @@ void Game::render() //render player
 	this->window->clear();
 
 	/*draw space*/
-	if (!this->isGameStart) // game yang mai start
+	if (!this->isGameStart) // game start
 	{
 		this->renderBGMenu(); // BGMenu
 		this->music.stop();

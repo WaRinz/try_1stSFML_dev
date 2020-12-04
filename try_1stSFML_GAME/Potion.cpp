@@ -6,7 +6,7 @@ void Potion::initialVariables()
 	this->type = 0;
 	this->hpmax = static_cast<int>(this->pointCount);
 	this->hp = this->hpmax;
-	this->damage = -30.f;
+	this->damage = -20.f;
 	this->points = 200.f;
 
 	this->speed = 1.f;

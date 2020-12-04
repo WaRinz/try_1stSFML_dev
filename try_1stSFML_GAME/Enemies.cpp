@@ -7,7 +7,7 @@ void Enemies::initialVariables()
 	this->hpmax		= static_cast<int>(this->pointCount);
 	this->hp		= this->hpmax;
 	this->damage	= 20.f;
-	this->points	= 500.f;
+	this->points	= 50.f;
 
 	this->speed		= 7.f;
 }
