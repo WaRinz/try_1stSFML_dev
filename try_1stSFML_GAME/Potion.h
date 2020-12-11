@@ -17,7 +17,7 @@ private:
 	unsigned pointCount;
 	sf::CircleShape shape; // sprite
 
-	// ADD NEW TEXTURE & SPRITE --> Yellow Flappy
+	// ADD NEW TEXTURE & SPRITE --> POTION
 	sf::Texture poTex;
 	sf::Sprite  poSprite;
 
@@ -26,7 +26,7 @@ private:
 	int hp;
 	int hpmax;
 	int damage;
-	float points;
+	int points;
 	float speed;
 
 	float posX;

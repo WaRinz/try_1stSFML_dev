@@ -127,6 +127,12 @@ void Game::initialPotion()
 	this->PospawnTimer = this->PospawnTimerMax;
 }
 
+void Game::initialShield()
+{
+	this->ShspawnTimerMax = 90.f;
+	this->ShspawnTimer= this->ShspawnTimerMax;
+}
+
 void Game::initialSound()
 {
 	if (!this->buffer.loadFromFile("Textures/pop.wav"))
@@ -188,11 +194,19 @@ void Game::LobThangMod()
 		delete po;
 	}
 	this->potion.clear();		// potion
+	
+								
+	// shield
+	for (auto& sh : this->shield)
+	{
+		// delete shield
+		delete sh;
+	}
+	this->shield.clear();		// shield
 
 
 	// player HP start set to 100
 	this->player->setHP(100);
-	
 	// point begin = 0
 	this->points = 0;
 
@@ -216,13 +230,18 @@ void Game::initialSystem()
 /*GAME WINDOW*/
 Game::Game()
 {
+	// DISPLAY WINDOW;
 	this->initialWindow();
 
+	// MENU;
 	this->initialBGMenu();
 
 	this->initialTextures();
 
+	// FONT & SCORE;
 	this->initialGUI();
+
+	// BACKGROUND;
 	this->initialBG();
 	this, initialBGSound();
 	this->initialHaha();
@@ -230,11 +249,17 @@ Game::Game()
 
 	this->initialSystem();
 
+	// PLAYER;
 	this->initialPlayer();
+
+	// ENEMIES;
 	this->initialEnemies();
 	this->initialRedEnemy();
 	this->initialBlueEnemy();
+
+	// ITEM;
 	this->initialPotion();
+	this->initialShield();
 
 	
 }
@@ -244,33 +269,38 @@ Game::~Game()
 	delete this->window;
 	delete this->player;
 	
-	//delete textures
+	//delete textures;
 	for (auto& i : this->textures)
 	{
 		delete i.second;
 	}
-	//delete bullets
+	//delete bullets;
 	for (auto* i : this->bullets)
 	{
 		delete i;
 	}
-	//delete enemies yellow flappy
+	//delete enemies yellow flappy;
 	for (auto* i : this->enemies)
 	{
 		delete i;
 	}
-	//delete red bird
+	//delete red bird;
 	for (auto* i : this->redenemy)
 	{
 		delete i;
 	}
-	//delete blue bird
+	//delete blue bird;
 	for (auto* i : this->blueenemy)
 	{
 		delete i;
 	}
-	//delete potion
+	//delete potion;
 	for (auto* i : this->potion)
+	{
+		delete i;
+	}
+	//delete shield;
+	for (auto* i : this->shield)
 	{
 		delete i;
 	}
@@ -286,11 +316,11 @@ void Game::checkStart()
 /*FUNCTIONS*/
 void Game::run()
 {
-	while (this->window->isOpen()) // Game run
+	while (this->window->isOpen()) // Game run;
 	{
 
 		this->updatePollEvents();
-		if (this->player->getHp() > 0) // If player hp > 0
+		if (this->player->getHp() > 0) // If player hp > 0;
 		{
 			this->updateDt();
 			this->update();
@@ -312,23 +342,25 @@ void Game::updatePollEvents()
 			this->window->close();
 		if (event.Event::KeyPressed && event.Event::key.code == sf::Keyboard::K)
 		{
-			this->isGameStart = true;  // check game --- start
+			this->isGameStart = true;  // check game --- start;
 			this->music.play();
 		}
 		if (event.Event::KeyPressed && event.Event::key.code == sf::Keyboard::U)
 		{
-			this->isGameStart = false; // check game --- close
+			this->isGameStart = false; // check game --- close;
+			this->player->gotShield = false;
 			this->LobThangMod();
+			this->player->setPosition(0.f, 450.f);
 		}
 
 		
 	}
 }
 
-void Game::updateInput() // COMMAND BUTTON
+void Game::updateInput() // COMMAND BUTTON;
 {
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) && this->player->canAttack()) //press J = attack
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) && this->player->canAttack()) //press J = attack;
 	{
 		this->bullets.push_back(
 			new Bullet(
@@ -507,6 +539,10 @@ void Game::updateBlueEnemy()
 			this->player->loseHP(this->blueenemy.at(Bcounter)->getDamage());
 			delete this->blueenemy.at(Bcounter);
 			this->blueenemy.erase(this->blueenemy.begin() + Bcounter);
+			if (this->player->gotShield == true)
+			{
+				this->player->numShield -= 1;
+			}
 
 		}
 
@@ -551,6 +587,50 @@ void Game::updatePotion() // potion
 		}
 
 		++Pcounter;
+	}
+}
+
+void Game::updateShield()
+{
+	// shield spawning
+	this->ShspawnTimer += 0.1f;
+	if (this->ShspawnTimer >= this->ShspawnTimerMax)
+	{
+		this->shield.push_back(new Shield(1700.f, rand() % this->window->getSize().y + 100.f));
+		this->ShspawnTimer = 0.f;
+
+	}
+
+	// update
+	unsigned Scounter = 0;
+	for (auto* shi : this->shield)
+	{
+		shi->update();
+
+		// Item culling (top screen)
+		if (shi->getBounds().left < this->window->getSize().y - 1700.f)
+		{
+			// delete shield
+			delete this->shield.at(Scounter);
+			this->shield.erase(this->shield.begin() + Scounter);
+
+		}
+
+		// Item & Player colission
+		else if (shi->getBounds().intersects(this->player->getBounds()))
+		{
+			this->player->gotShield = true;
+			this->player->numShield = 2;
+			// delete shield W H I L E   H I T   T H E   P L A Y E R 
+			this->player->loseHP(this->shield.at(Scounter)->getDamage());
+			this->player->getShield(true, this->player->getPos().x + this->player->getBounds().width / 2.f, this->player->getPos().y);
+
+			delete this->shield.at(Scounter);
+			this->shield.erase(this->shield.begin() + Scounter);
+
+		}
+
+		++Scounter;
 	}
 }
 
@@ -639,6 +719,26 @@ void Game::updateCombat() // Shooting & Get Points ----- After shooting diaapear
 			}
 		}
 	}
+	// Shield
+	for (int Si = 0; Si < this->shield.size(); ++Si)
+	{
+		bool Senemy_removed = false;
+		this->shield[Si]->update();
+
+		for (size_t Sk = 0; Sk < this->bullets.size() && !Senemy_removed; Sk++) // has been shot
+		{
+
+			if (this->bullets[Sk]->getBounds().intersects(this->shield[Si]->getBounds())) // IF bullet touch the enemies
+			{
+				this->points += this->shield[Si]->getPoints();
+
+				this->bullets.erase(this->bullets.begin() + Sk);
+				this->shield.erase(this->shield.begin() + Si);
+
+				Senemy_removed = true;
+			}
+		}
+	}
 
 }
 
@@ -649,21 +749,25 @@ void Game::updateCollision()
 	if (this->player->getBounds().left < 0.f)
 	{
 		this->player->setPosition(0.f, this->player->getBounds().top);
+		this->player->updateShield(+70.f, this->player->getBounds().top);
 	}
 	// right
 	else if (this->player->getBounds().left + this->player->getBounds().width >= this->window->getSize().x)
 	{
 		this->player->setPosition(this->window->getSize().x - this->player->getBounds().width, this->player->getBounds().top);
+		this->player->updateShield(this->window->getSize().x - this->player->getBounds().width +70.f, this->player->getBounds().top);
 	}
 	// top
 	if (this->player->getBounds().top < 0.f)
 	{
 		this->player->setPosition(this->player->getBounds().left, 0.f);
+		this->player->updateShield(this->player->getBounds().left +75.f, 0.f);
 	}
 	// down
 	else if (this->player->getBounds().top + this->player->getBounds().height >= this->window->getSize().y)
 	{
 		this->player->setPosition(this->player->getBounds().left, this->window->getSize().y - this->player->getBounds().height);
+		this->player->updateShield(this->player->getBounds().left +75.f, this->window->getSize().y - this->player->getBounds().height);
 	}
 }
 
@@ -708,7 +812,9 @@ void Game::update()
 		this->updateEnemies();
 		this->updateRedEnemy();
 		this->updateBlueEnemy();
+
 		this->updatePotion();
+		this->updateShield();
 
 
 		this->updateCombat();
@@ -779,6 +885,10 @@ void Game::render() //render player
 		for (auto* pot : this->potion)
 		{
 			pot->render(*this->window);			// potion
+		}
+		for (auto* shi : this->shield)
+		{
+			shi->render(*this->window);			// shield
 		}
 
 		/*display*/

@@ -11,12 +11,18 @@
 #include<sstream>
 #include<vector>
 
+// PLAYER PART
 #include"Player.h"
 #include"Bullet.h"
+
+// ENEMIES PART
 #include"Enemies.h"
 #include"RedEnemy.h"
 #include"BlueEnemy.h"
+
+// ITEM PART
 #include"Potion.h"
+#include"Shield.h"
 
 
 class Game
@@ -30,6 +36,7 @@ private:
 	std::vector<Bullet*> bullets;
 
 	sf::Clock dtClock;
+	sf::Time time = sf::seconds(1.f);
 	float dt;
 
 	// ICON
@@ -95,6 +102,11 @@ private:
 	float PospawnTimerMax;
 	std::vector<Potion*> potion;
 
+	/* SHIELD --- PROTECT */
+	float ShspawnTimer;
+	float ShspawnTimerMax;
+	std::vector<Shield*> shield;
+
 
 
 	void initialWindow();
@@ -113,6 +125,7 @@ private:
 	void initialRedEnemy();
 	void initialBlueEnemy();
 	void initialPotion();
+	void initialShield();
 
 	void initialSound();
 	void initialHaha();
@@ -144,6 +157,7 @@ public:
 	void updateRedEnemy();
 	void updateBlueEnemy();
 	void updatePotion();
+	void updateShield();
 
 	void updateCombat();
 

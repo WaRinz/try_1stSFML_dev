@@ -49,7 +49,7 @@ void Player::initialAnimations()
 
 void Player::initialPhysics()
 {
-	this->velocityMax = 5.f;
+	this->velocityMax = 6.f;
 	this->velocityMin = 1.f;
 	this->acceleration = 2.f;
 	this->deceleration = 0.93f;
@@ -167,6 +167,10 @@ void Player::updatePhysics()
 		this->velocity.y = 0.f;
 
 	this->sprite.move(this->velocity);
+	if (gotShield == true)
+	{
+		this->SHsprite.move(this->velocity);
+	}
 }
 
 void Player::updateMovement()
@@ -278,6 +282,27 @@ void Player::updateAttack()
 		
 }
 
+void Player::getShield(bool ON, float sx, float sy)
+{
+	this->SHx = sx;
+	this->SHy = sy;
+	this->gotShield = ON;
+
+	/*load texture shield file*/
+	if (!this->SHtexture.loadFromFile("Textures/shield.png"))
+	{
+		std::cout << "ERROR::SHIELD::INITIALTEXTURE::could not load." << "\n";
+	}
+	this->SHsprite.setTexture(this->SHtexture);
+	this->SHsprite.setPosition(sx - 130.f, sy - 40.f);
+	this->SHsprite.setScale(0.5f, 0.5f);
+}
+
+void Player::updateShield(float sx, float sy)
+{
+	this->SHsprite.setPosition(sx - 130.f, sy - 40.f);
+}
+
 /* FUNCTIONs */
 void Player::update()
 {
@@ -290,4 +315,9 @@ void Player::update()
 void Player::render(sf::RenderTarget& target)
 {
 	target.draw(this->sprite);
+	if (gotShield == true)
+	{
+		target.draw(this->SHsprite);
+		this->numShield = 3;
+	}
 }

@@ -17,7 +17,7 @@ void BlueEnemy::initialTexture()
 {
 	if (!this->blueTex.loadFromFile("Textures/blueAnim.png"))
 	{
-		std::cout << "ERROR::Flappy::INITIAL TEXTURE::could not load." << "\n";
+		std::cout << "ERROR::Blue Bird::INITIAL TEXTURE::could not load." << "\n";
 	}
 }
 

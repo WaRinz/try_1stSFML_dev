@@ -6,8 +6,8 @@ void RedEnemy::initialVariables()
 	this->type = 0;
 	this->hpmax = static_cast<int>(this->pointCount);
 	this->hp = this->hpmax;
-	this->damage = 5.f;
-	this->points = 5.f;
+	this->damage = 5;
+	this->points = 5;
 
 	this->speed = 3.f;
 	this->RedMove = false;
@@ -17,7 +17,7 @@ void RedEnemy::initialTexture()
 {
 	if (!this->redTex.loadFromFile("Textures/redAnim.png"))
 	{
-		std::cout << "ERROR::Flappy::INITIAL TEXTURE::could not load." << "\n";
+		std::cout << "ERROR::Red Bird::INITIAL TEXTURE::could not load." << "\n";
 	}
 }
 
@@ -79,7 +79,7 @@ const int& RedEnemy::getDamage() const
 
 
 
-// function
+// function;
 void RedEnemy::update()
 {
 	this->updateAnimations();

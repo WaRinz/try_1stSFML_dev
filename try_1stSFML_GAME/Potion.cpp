@@ -6,8 +6,8 @@ void Potion::initialVariables()
 	this->type = 0;
 	this->hpmax = static_cast<int>(this->pointCount);
 	this->hp = this->hpmax;
-	this->damage = -20.f;
-	this->points = 200.f;
+	this->damage = -20;
+	this->points = 200;
 
 	this->speed = 1.f;
 }
@@ -16,7 +16,7 @@ void Potion::initialTexture()
 {
 	if (!this->poTex.loadFromFile("Textures/HPpo.png"))
 	{
-		std::cout << "ERROR::Flappy::INITIAL TEXTURE::could not load." << "\n";
+		std::cout << "ERROR::Potion::INITIAL TEXTURE::could not load." << "\n";
 	}
 }
 

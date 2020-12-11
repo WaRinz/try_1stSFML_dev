@@ -12,10 +12,11 @@ enum PLAYER_ANIMATION_STATES {IDLE = 0, MOVING_LEFT, MOVING_RIGHT, MOVING_UP, MO
 class Player
 {
 private:
+
+	// PLAYER MODEL
 	sf::Sprite  sprite;
 	sf::Texture texture;
 	
-
 	// attack & max speed
 	float attackCooldown;
 	float attackCooldownMax;
@@ -38,6 +39,11 @@ private:
 	float acceleration;
 	float deceleration; //drag
 
+	// SHIELD MODEL
+	sf::Sprite  SHsprite;
+	sf::Texture SHtexture;
+	float SHx, SHy;
+
 	/*private function*/
 
 	void initialVariables();
@@ -46,9 +52,10 @@ private:
 	void initialAnimations();
 	void initialPhysics();
 
-
 public:
 
+	bool gotShield = false;
+	int  numShield = 3;
 	Player();
 	virtual ~Player();
 
@@ -77,6 +84,10 @@ public:
 	void updateMovement();
 	void updateAnimations();
 	void updateAttack();
+
+	void getShield(bool ON, float sx, float sy);
+	void updateShield(float sx, float sy);
+
 	void update();
 	void render(sf::RenderTarget&target);
 	

@@ -31,7 +31,7 @@ private:
 	int hp;
 	int hpmax;
 	int damage;
-	float points;
+	int points;
 	float speed;
 
 	float posX;

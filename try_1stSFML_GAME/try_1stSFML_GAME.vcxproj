@@ -163,6 +163,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Potion.cpp" />
     <ClCompile Include="RedEnemy.cpp" />
+    <ClCompile Include="Shield.cpp" />
     <ClCompile Include="tryTry.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
@@ -176,6 +177,7 @@
     <ClInclude Include="Potion.h" />
     <ClInclude Include="RedEnemy.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Shield.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="try_1stSFML_GAME.rc" />
