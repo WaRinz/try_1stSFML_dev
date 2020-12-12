@@ -318,6 +318,5 @@ void Player::render(sf::RenderTarget& target)
 	if (gotShield == true)
 	{
 		target.draw(this->SHsprite);
-		this->numShield = 3;
 	}
 }

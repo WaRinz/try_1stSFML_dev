@@ -55,7 +55,6 @@ private:
 public:
 
 	bool gotShield = false;
-	int  numShield = 3;
 	Player();
 	virtual ~Player();
 

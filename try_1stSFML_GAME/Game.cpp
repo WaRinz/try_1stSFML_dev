@@ -129,7 +129,7 @@ void Game::initialPotion()
 
 void Game::initialShield()
 {
-	this->ShspawnTimerMax = 90.f;
+	this->ShspawnTimerMax = 400.f;
 	this->ShspawnTimer= this->ShspawnTimerMax;
 }
 
@@ -157,6 +157,32 @@ void Game::initialHaha()
 
 	this->haha.play();
 	this->haha.setVolume(200.f);
+}
+
+void Game::initialHPsound()
+{
+	if (!this->buffHP.loadFromFile("Textures/glass.wav"))
+	{
+		std::cout << "ERROR::GAME::COLD NOT LOAD - potion break - SOUND" << "\n";
+	}
+	// initial HAHA
+	this->soundHP.setBuffer(this->buffHP);
+
+	this->soundHP.play();
+	this->soundHP.setVolume(250.f);
+}
+
+void Game::initialShieldSound()
+{
+	if (!this->buffShield.loadFromFile("Textures/hitShield.wav"))
+	{
+		std::cout << "ERROR::GAME::COLD NOT LOAD - soudShield - SOUND" << "\n";
+	}
+	// initial HAHA
+	this->soundShield.setBuffer(this->buffShield);
+
+	this->soundShield.play();
+	this->soundShield.setVolume(200.f);
 }
 
 void Game::LobThangMod()
@@ -244,7 +270,6 @@ Game::Game()
 	// BACKGROUND;
 	this->initialBG();
 	this, initialBGSound();
-	this->initialHaha();
 	this->initialSound();
 
 	this->initialSystem();
@@ -455,10 +480,20 @@ void Game::updateEnemies() // yellow flappy
 		else if (enemie->getBounds().intersects(this->player->getBounds()))
 		{
 			// delete enemy W H I L E   H I T   T H E   P L A Y E R 
-			this->player->loseHP(this->enemies.at(Fcounter)->getDamage());
-			delete this->enemies.at(Fcounter);
-			this->enemies.erase(this->enemies.begin() + Fcounter);
-	
+			if (this->haveShield == false)
+			{
+				this->player->loseHP(this->enemies.at(Fcounter)->getDamage());
+				delete this->enemies.at(Fcounter);
+				this->enemies.erase(this->enemies.begin() + Fcounter);
+			}
+
+			else if (this->haveShield == true)
+			{
+				this->initialShieldSound();
+				this->numShield -= 1;
+				delete this->enemies.at(Fcounter);
+				this->enemies.erase(this->enemies.begin() + Fcounter);
+			}
 		}
 
 		++Fcounter;
@@ -496,10 +531,20 @@ void Game::updateRedEnemy() // red bird
 		else if (redenem->getBounds().intersects(this->player->getBounds()))
 		{
 			// delete enemy W H I L E   H I T   T H E   P L A Y E R 
-			this->player->loseHP(this->redenemy.at(Rcounter)->getDamage());
-			delete this->redenemy.at(Rcounter);
-			this->redenemy.erase(this->redenemy.begin() + Rcounter);
+			if (this->haveShield == false)
+			{
+				this->player->loseHP(this->redenemy.at(Rcounter)->getDamage());
+				delete this->redenemy.at(Rcounter);
+				this->redenemy.erase(this->redenemy.begin() + Rcounter);
+			}
 
+			else if (this->haveShield == true)
+			{
+				this->initialShieldSound();
+				this->numShield -= 1;
+				delete this->redenemy.at(Rcounter);
+				this->redenemy.erase(this->redenemy.begin() + Rcounter);
+			}
 		}
 
 		++Rcounter;
@@ -536,14 +581,20 @@ void Game::updateBlueEnemy()
 		else if (blueenem->getBounds().intersects(this->player->getBounds()))
 		{
 			// delete enemy W H I L E   H I T   T H E   P L A Y E R 
-			this->player->loseHP(this->blueenemy.at(Bcounter)->getDamage());
-			delete this->blueenemy.at(Bcounter);
-			this->blueenemy.erase(this->blueenemy.begin() + Bcounter);
-			if (this->player->gotShield == true)
+			if (this->haveShield == false)
 			{
-				this->player->numShield -= 1;
+				this->player->loseHP(this->blueenemy.at(Bcounter)->getDamage());
+				delete this->blueenemy.at(Bcounter);
+				this->blueenemy.erase(this->blueenemy.begin() + Bcounter);
 			}
-
+			
+			else if (this->haveShield == true)
+			{
+				this->initialShieldSound();
+				this->numShield -=1;
+				delete this->blueenemy.at(Bcounter);
+				this->blueenemy.erase(this->blueenemy.begin() + Bcounter);
+			}
 		}
 
 		++Bcounter;
@@ -619,8 +670,8 @@ void Game::updateShield()
 		// Item & Player colission
 		else if (shi->getBounds().intersects(this->player->getBounds()))
 		{
-			this->player->gotShield = true;
-			this->player->numShield = 2;
+			this->haveShield = true;
+			this->numShield = 3;
 			// delete shield W H I L E   H I T   T H E   P L A Y E R 
 			this->player->loseHP(this->shield.at(Scounter)->getDamage());
 			this->player->getShield(true, this->player->getPos().x + this->player->getBounds().width / 2.f, this->player->getPos().y);
@@ -631,6 +682,18 @@ void Game::updateShield()
 		}
 
 		++Scounter;
+	}
+}
+
+void Game::checkShield()
+{
+	if (this->numShield <= 0)
+	{
+		// return
+		this->numShield = 3;
+
+		this->player->getShield(false, this->player->getPos().x + this->player->getBounds().width / 2.f, this->player->getPos().y);
+		this->haveShield = false;
 	}
 }
 
@@ -710,6 +773,7 @@ void Game::updateCombat() // Shooting & Get Points ----- After shooting diaapear
 
 			if (this->bullets[Pk]->getBounds().intersects(this->potion[Pi]->getBounds())) // IF bullet touch the enemies
 			{
+				this->initialHPsound();
 				this->points += this->potion[Pi]->getPoints();
 
 				this->bullets.erase(this->bullets.begin() + Pk);
@@ -720,7 +784,7 @@ void Game::updateCombat() // Shooting & Get Points ----- After shooting diaapear
 		}
 	}
 	// Shield
-	for (int Si = 0; Si < this->shield.size(); ++Si)
+	/*for (int Si = 0; Si < this->shield.size(); ++Si)
 	{
 		bool Senemy_removed = false;
 		this->shield[Si]->update();
@@ -738,7 +802,7 @@ void Game::updateCombat() // Shooting & Get Points ----- After shooting diaapear
 				Senemy_removed = true;
 			}
 		}
-	}
+	}*/
 
 }
 
@@ -808,6 +872,7 @@ void Game::update()
 		this->player->update();
 
 		// UPDATE OBJECT
+
 		this->updateBullets();
 		this->updateEnemies();
 		this->updateRedEnemy();
@@ -815,6 +880,7 @@ void Game::update()
 
 		this->updatePotion();
 		this->updateShield();
+		this->checkShield();
 
 
 		this->updateCombat();
@@ -837,7 +903,9 @@ void Game::updateDt()
 {
 	// update time to run
 
-	this->dt = this->dtClock.restart().asSeconds();
+	this->dt = this->dtClock.getElapsedTime().asSeconds();
+	
+	//printf("\n Time : %f", this->dt);
 
 
 }
@@ -900,6 +968,8 @@ void Game::render() //render player
 			this->music.stop();
 			this->initialHaha();
 		}
+
+
 	}
 	this->window->display();
 }

@@ -5,7 +5,7 @@
 #include<SFML/Window.hpp>
 #include<SFML/Network.hpp>
 
-
+#include<cstdlib>
 #include<map>
 #include<string>
 #include<sstream>
@@ -23,6 +23,9 @@
 // ITEM PART
 #include"Potion.h"
 #include"Shield.h"
+
+// SCORE PART
+#include<algorithm>
 
 
 class Game
@@ -45,12 +48,21 @@ private:
 	sf::Font font;
 	sf::Text pointText;
 	sf::Text gameOverText;
+	// S Y S T E M  -------  SCORE
+	int points;
+	int numShield = 3;
+	bool haveShield = false;
 	
 	// SOUND hit
 	sf::SoundBuffer buffer;
 	sf::Sound sound;
-	sf::SoundBuffer bufflol;
-	sf::Sound haha;
+		sf::SoundBuffer bufflol;
+		sf::Sound haha;
+		sf::SoundBuffer buffHP;
+		sf::Sound soundHP;
+		sf::SoundBuffer buffShield;
+		sf::Sound soundShield;
+
 
 	// BG music
 	sf::Music music;
@@ -71,8 +83,7 @@ private:
 		sf::Vector2f mouseView;
 
 
-	// S Y S T E M
-	unsigned points;
+
 
 
 	/* PILOT */
@@ -129,6 +140,8 @@ private:
 
 	void initialSound();
 	void initialHaha();
+	void initialHPsound();
+	void initialShieldSound();
 
 	// CLEAN ALL
 	void LobThangMod();
@@ -157,7 +170,9 @@ public:
 	void updateRedEnemy();
 	void updateBlueEnemy();
 	void updatePotion();
+	
 	void updateShield();
+	void checkShield();
 
 	void updateCombat();
 

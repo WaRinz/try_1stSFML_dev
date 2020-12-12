@@ -23,7 +23,7 @@ void Potion::initialTexture()
 void Potion::initialSprite()
 {
 	this->poSprite.setTexture(this->poTex);
-	this->poSprite.scale(0.2f, 0.2f);
+	this->poSprite.scale(0.25f, 0.25f);
 }
 
 void Potion::initialShape()
