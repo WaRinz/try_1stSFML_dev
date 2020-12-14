@@ -66,6 +66,14 @@ void Game::initialGUI()  // text health bar
 
 	this, playerHpBarBack = this->playerHpBar;
 	this->playerHpBarBack.setFillColor(sf::Color(25, 25, 25, 200));
+
+	// player text
+	this->playerText.setPosition(sf::Vector2f(450.f, 600.f));
+	this->playerText.setFont(this->font);
+	this->playerText.setCharacterSize(30);
+	this->playerText.setFillColor(sf::Color::Black);
+	this->playerText.setString("- for point -");
+	this->playerText.setStyle(sf::Text::Bold);
 }
 
 void Game::initialBG()
@@ -90,6 +98,7 @@ void Game::initialBGSound()
 	
 }
 
+// Board State
 void Game::initialBGMenu()
 {
 	if (!this->menuTexture.loadFromFile("Textures/menuART001.png"))
@@ -103,6 +112,36 @@ void Game::initialBGMenu()
 								static_cast<float>(this->window->getSize().y)
 								)
 								);
+}
+
+void Game::initialBGtype()
+{
+	if (!this->BGtypeTex.loadFromFile("Textures/.png"))
+	{
+		std::cout << "ERROR::Type Name Background ::could not load." << "\n";
+	}
+
+	//this->menuSprite.setTexture(&menuTexture);
+	this->BGtypeRecShape.setSize(sf::Vector2f(
+								static_cast<float>(this->window->getSize().x),
+								static_cast<float>(this->window->getSize().y)
+								)
+								);
+}
+
+void Game::initialScoreboard()
+{
+	if (!this->ScoreTex.loadFromFile("Textures/.png"))
+	{
+		std::cout << "ERROR::Scoreboard Background ::could not load." << "\n";
+	}
+
+	//this->menuSprite.setTexture(&menuTexture);
+	this->ScoreRecShape.setSize(sf::Vector2f(
+								static_cast<float>(this->window->getSize().x),
+								static_cast<float>(this->window->getSize().y)
+							)
+							);
 }
 
 /* --- PILOT --- */
@@ -268,7 +307,7 @@ void Game::writeFileScore()
 	writer.open("Score.txt", std::fstream::app);
 	if (writer.is_open())
 	{
-		writer << "" << this->points << std::endl;
+		writer << this->playerName << " " << this->points << std::endl;
 
 		std::cout << "Open File Success!";
 
@@ -279,6 +318,16 @@ void Game::writeFileScore()
 	}
 }
 
+void Game::registername()
+{
+	// initial point text --- rectangle box
+
+	this->nameTTT.setSize(sf::Vector2f(750.f, 80.f));
+	this->nameTTT.setOutlineColor(sf::Color::Black);
+	this->nameTTT.setPosition(sf::Vector2f(500.f, 300.f));
+	
+}
+
 void Game::readFileScore()
 {
 	std::ifstream reader;
@@ -287,7 +336,7 @@ void Game::readFileScore()
 	if (reader.is_open())
 	{
 		//reader >> a;
-		reader >> this->points;
+		reader >> this->playerName >> this->points;
 
 		std::cout << "Read File Success!";
 		std::cout << "" << this->points << std::endl;
@@ -313,6 +362,7 @@ Game::Game()
 
 	// FONT & SCORE;
 	this->initialGUI();
+	this->registername();
 
 	// BACKGROUND;
 	this->initialBG();
@@ -412,10 +462,50 @@ void Game::updatePollEvents()
 			this->window->close();
 		if (event.Event::KeyPressed&& event.Event::key.code == sf::Keyboard::Escape)
 			this->window->close();
-		if (event.Event::KeyPressed && event.Event::key.code == sf::Keyboard::K)
+		if (event.Event::KeyPressed && event.Event::key.code == sf::Keyboard::K || this->clickK)
 		{
-			this->isGameStart = true;  // check game --- start;
-			this->music.play();
+			this->clickK = true;
+			if (this->clickK == true && event.type == sf::Event::TextEntered && event.text.unicode < 128)
+			{
+				this->renderScoreboard();		// Scoreboard
+				std::cout << "" << event.key.code << std::endl;
+				switch (event.key.code)
+				{
+				case 8: // backspace delete name
+				
+					if (this->playerName.size() == 0)
+					{
+						break;
+					}
+					this->playerName.pop_back();
+					this->playerText.setString(this->playerName);
+				
+					break;
+
+				case 13: // press enter button
+
+					if (this->playerName.size() > 0)
+					{
+
+					this->clickK = false;
+					this->isGameStart = true;  // check game --- start;
+					this->music.play();
+					}
+
+
+				break;
+					
+				default:
+					if (this->playerName.size() > 10)
+					{
+						break;
+					}
+					this->playerName += event.text.unicode;
+					this->playerText.setString(this->playerName);
+				}
+				
+			}
+
 		}
 		if (event.Event::KeyPressed && event.Event::key.code == sf::Keyboard::U)
 		{
@@ -910,6 +1000,16 @@ void Game::renderBGMenu()
 	this->window->draw(this->menuSprite);
 }
 
+void Game::renderBGtype()
+{
+	this->window->draw(this->BGtypeRecShape);
+}
+
+void Game::renderScoreboard()
+{
+	this->window->draw(this->ScoreRecShape);
+}
+
 /*CLOSE WINDOW*/
 void Game::update()
 {
@@ -950,6 +1050,15 @@ void Game::update()
 
 }
 
+void Game::renderNameBoxAndText()
+{
+	if (this->clickK) //  == true จริงถึงจะเข้า
+	{
+		this->window->draw(this->nameTTT);
+		this->window->draw(this->playerText);
+	}
+}
+
 void Game::updateDt()
 {
 	// update time to run
@@ -971,9 +1080,11 @@ void Game::render() //render player
 	this->window->clear();
 
 	/*draw space*/
+
 	if (!this->isGameStart) // game start
 	{
-		this->renderBGMenu(); // BGMenu
+		this->renderBGMenu();			// BGMenu
+		this->renderNameBoxAndText();
 		this->music.stop();
 	}
 	
@@ -1018,6 +1129,8 @@ void Game::render() //render player
 
 			this->window->draw(this->gameOverText);
 			this->window->draw(this->results);
+
+			this->renderScoreboard();		// Scoreboard
 			this->writeFileScore();
 			this->readFileScore();
 
@@ -1030,3 +1143,4 @@ void Game::render() //render player
 	}
 	this->window->display();
 }
+

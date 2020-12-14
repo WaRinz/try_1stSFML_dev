@@ -50,7 +50,7 @@ private:
 	sf::Font font;
 
 	sf::Text pointText;
-	sf::Text playerText;
+	
 
 	sf::Text gameOverText;
 
@@ -63,8 +63,12 @@ private:
 	int save_point;
 	int numShield = 3;
 	bool haveShield = false;
-	std::string playerName;
+	bool clickK = false;
 
+	sf::RectangleShape nameTTT;
+
+	std::string playerName = "";
+	sf::Text playerText;
 	
 	// SOUND hit
 	sf::SoundBuffer buffer;
@@ -85,10 +89,20 @@ private:
 	sf::Sprite background;
 
 	// --- MENU ----
-		// Menu BG
+		
+	// Menu BG
 		sf::Texture menuTexture;
 		sf::RectangleShape menuSprite;
 		bool isGameStart;
+		
+		// Typre Text Art
+		sf::Texture BGtypeTex;
+		sf::RectangleShape BGtypeRecShape;
+
+		// Scoreboard
+		sf::Texture ScoreTex;
+		sf::RectangleShape ScoreRecShape;
+
 		
 		// Menu Button
 		sf::Vector2i mouseScreen;
@@ -139,7 +153,12 @@ private:
 	void initialGUI();
 	void initialBG();
 	void initialBGSound();
+	
+	// Board State
 	void initialBGMenu();
+	void initialBGtype();
+	void initialScoreboard();
+	void registername();
 
 	void initialSystem();
 	void writeFileScore();
@@ -214,8 +233,13 @@ public:
 	// import font text & health bar
 	void renderGUI();
 
-	// import menu
+	// import board
 	void renderBGMenu();
+	void renderBGtype();
+	void renderScoreboard();
+
+	// textNameBox
+	void renderNameBoxAndText();
 
 
 	void update(); // Game update(ME); = update player(You)
