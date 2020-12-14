@@ -49,6 +49,14 @@ void Game::initialGUI()  // text health bar
 	this->gameOverText.setString("!!! GAME OVER !!!");
 	this->gameOverText.setStyle(sf::Text::Bold);
 
+	// Show results ---> SCORE
+	this->results.setPosition(sf::Vector2f(650.f, 500.f));
+	this->results.setFont(this->font);
+	this->results.setCharacterSize(60);
+	this->results.setFillColor(sf::Color::Magenta);
+	this->results.setString("Your Score : ");
+	this->results.setStyle(sf::Text::Bold);
+
 	// initial HP
 	this->playerHpBar.setSize(sf::Vector2f(500.f, 30.f));
 	this->playerHpBar.setFillColor(sf::Color::Red);
@@ -89,6 +97,7 @@ void Game::initialBGMenu()
 		std::cout << "ERROR::Menu Background ::could not load." << "\n";
 	}
 
+	//this->menuSprite.setTexture(&menuTexture);
 	this->menuSprite.setSize(sf::Vector2f (
 								static_cast<float>(this->window->getSize().x), 
 								static_cast<float>(this->window->getSize().y)
@@ -252,6 +261,44 @@ void Game::initialSystem()
 
 }
 
+void Game::writeFileScore()
+{
+	std::ofstream writer;
+
+	writer.open("Score.txt", std::fstream::app);
+	if (writer.is_open())
+	{
+		writer << "" << this->points << std::endl;
+
+		std::cout << "Open File Success!";
+
+	}
+	else
+	{
+		std::cout << "Cannot Open File!";
+	}
+}
+
+void Game::readFileScore()
+{
+	std::ifstream reader;
+	char a;
+	reader.open("Score.txt", std::fstream::app);
+	if (reader.is_open())
+	{
+		//reader >> a;
+		reader >> this->points;
+
+		std::cout << "Read File Success!";
+		std::cout << "" << this->points << std::endl;
+
+	}
+	else
+	{
+		std::cout << "Cannot Read File!";
+	}
+}
+
 
 /*GAME WINDOW*/
 Game::Game()
@@ -403,8 +450,12 @@ void Game::updateGUI() // text or can change
 {
 	// TEXT
 		std::stringstream ss;
+		std::stringstream sc;
 		ss << "Points: " << this->points;
 		this->pointText.setString(ss.str());
+
+		sc << "Your Score :" << this->points;
+		this->results.setString(sc.str());
 
 	// HP
 		float hpPercent = static_cast<float>(this->player->getHp()) / this->player->getHpMax();
@@ -964,9 +1015,15 @@ void Game::render() //render player
 		//game over
 		if (this->player->getHp() <= 0)
 		{
+
 			this->window->draw(this->gameOverText);
+			this->window->draw(this->results);
+			this->writeFileScore();
+			this->readFileScore();
+
 			this->music.stop();
 			this->initialHaha();
+
 		}
 
 

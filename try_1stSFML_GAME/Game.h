@@ -10,6 +10,7 @@
 #include<string>
 #include<sstream>
 #include<vector>
+#include<utility>
 
 // PLAYER PART
 #include"Player.h"
@@ -26,6 +27,7 @@
 
 // SCORE PART
 #include<algorithm>
+#include<fstream>
 
 
 class Game
@@ -46,12 +48,23 @@ private:
 	sf::Image icon;
 	// GUI
 	sf::Font font;
+
 	sf::Text pointText;
+	sf::Text playerText;
+
 	sf::Text gameOverText;
+
+	// your score :
+	sf::Text results;
+
+
 	// S Y S T E M  -------  SCORE
 	int points;
+	int save_point;
 	int numShield = 3;
 	bool haveShield = false;
+	std::string playerName;
+
 	
 	// SOUND hit
 	sf::SoundBuffer buffer;
@@ -129,6 +142,8 @@ private:
 	void initialBGMenu();
 
 	void initialSystem();
+	void writeFileScore();
+	void readFileScore();
 
 	// OBJECT
 	void initialPlayer();
