@@ -64,6 +64,9 @@ private:
 	int numShield = 3;
 	bool haveShield = false;
 	bool clickK = false;
+	bool blockMenu = false;
+
+	std::vector<std::vector<std::string>> GebKhaNaen;
 
 	sf::RectangleShape nameTTT;
 
@@ -73,20 +76,37 @@ private:
 	// SOUND hit
 	sf::SoundBuffer buffer;
 	sf::Sound sound;
+		// game over haha
 		sf::SoundBuffer bufflol;
 		sf::Sound haha;
+		
+		// HP Potion break
 		sf::SoundBuffer buffHP;
 		sf::Sound soundHP;
+
+		// Touch potion
+		sf::SoundBuffer buffHeal;
+		sf::Sound soundHeal;
+
+		// Take damage
+		sf::SoundBuffer buffHurt;
+		sf::Sound soundHurt;
+
+		// Shield block
 		sf::SoundBuffer buffShield;
 		sf::Sound soundShield;
 
 
 	// BG music
 	sf::Music music;
+	sf::Music menuMusic;
 
 	// BG
 	sf::Texture bgTexture;
-	sf::Sprite background;
+	sf::RectangleShape background;
+	sf::Texture bgTexture1;
+	sf::RectangleShape background1;
+
 
 	// --- MENU ----
 		
@@ -102,6 +122,7 @@ private:
 		// Scoreboard
 		sf::Texture ScoreTex;
 		sf::RectangleShape ScoreRecShape;
+
 
 		
 		// Menu Button
@@ -134,7 +155,7 @@ private:
 	float BluespawnTimerMax;
 	std::vector<BlueEnemy*> blueenemy;
 	
-
+	int KhamSang = 1;
 	/* POTION --- HEALTH */
 	float PospawnTimer;
 	float PospawnTimerMax;
@@ -152,7 +173,9 @@ private:
 
 	void initialGUI();
 	void initialBG();
+	void initialBG1();
 	void initialBGSound();
+	void initialBGMenuSound();
 	
 	// Board State
 	void initialBGMenu();
@@ -175,6 +198,8 @@ private:
 	void initialSound();
 	void initialHaha();
 	void initialHPsound();
+	void initialHealSound();
+	void initialHurtSound();
 	void initialShieldSound();
 
 	// CLEAN ALL
@@ -184,6 +209,7 @@ private:
 
 
 public:
+	sf::Event event;
 	Game();
 	virtual ~Game();
 	
@@ -208,6 +234,9 @@ public:
 	void updateShield();
 	void checkShield();
 
+	// UPDATE SCORE AND SAVE SCORE
+	void updateAndSaveScore();
+
 	void updateCombat();
 
 	void updateCollision();
@@ -229,6 +258,7 @@ public:
 
 	// import bg textures
 	void renderBG();
+	void renderBG1();
 
 	// import font text & health bar
 	void renderGUI();

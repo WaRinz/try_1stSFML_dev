@@ -28,15 +28,15 @@ void Game::initialTextures()
 void Game::initialGUI()  // text health bar
 {
 	// load font
-	if (!this->font.loadFromFile("Text/Opun-Regular.ttf"))
+	if (!this->font.loadFromFile("Text/rockeb.ttf"))
 	{
 		std::cout << "ERROR::GAME::COLD NOT LOAD FONT TEXT" << "\n";
 	}
 	
 	// initial point text
-	this->pointText.setPosition(sf::Vector2f(10.f, 10.f));
+	this->pointText.setPosition(sf::Vector2f(50.f, 5.f));
 	this->pointText.setFont(this->font);
-	this->pointText.setCharacterSize(40);
+	this->pointText.setCharacterSize(30);
 	this->pointText.setFillColor(sf::Color::Black);
 	this->pointText.setString("- for point -");
 	this->pointText.setStyle(sf::Text::Bold);
@@ -44,18 +44,18 @@ void Game::initialGUI()  // text health bar
 	// gameOver Text
 	this->gameOverText.setPosition(sf::Vector2f(650.f, 350.f));
 	this->gameOverText.setFont(this->font);
-	this->gameOverText.setCharacterSize(50);
+	this->gameOverText.setCharacterSize(90);
 	this->gameOverText.setFillColor(sf::Color::Red);
 	this->gameOverText.setString("!!! GAME OVER !!!");
 	this->gameOverText.setStyle(sf::Text::Bold);
 
 	// Show results ---> SCORE
-	this->results.setPosition(sf::Vector2f(650.f, 500.f));
+	this->results.setPosition(sf::Vector2f(150.f, 760.f));
 	this->results.setFont(this->font);
-	this->results.setCharacterSize(60);
-	this->results.setFillColor(sf::Color::Magenta);
-	this->results.setString("Your Score : ");
-	this->results.setStyle(sf::Text::Bold);
+	this->results.setCharacterSize(70);
+	this->results.setFillColor(sf::Color::Black);
+	this->results.setString(" score ");
+	this->results.setStyle(sf::Text::Regular);
 
 	// initial HP
 	this->playerHpBar.setSize(sf::Vector2f(500.f, 30.f));
@@ -68,9 +68,9 @@ void Game::initialGUI()  // text health bar
 	this->playerHpBarBack.setFillColor(sf::Color(25, 25, 25, 200));
 
 	// player text
-	this->playerText.setPosition(sf::Vector2f(450.f, 600.f));
+	this->playerText.setPosition(sf::Vector2f(500.f, 275.f));
 	this->playerText.setFont(this->font);
-	this->playerText.setCharacterSize(30);
+	this->playerText.setCharacterSize(100);
 	this->playerText.setFillColor(sf::Color::Black);
 	this->playerText.setString("- for point -");
 	this->playerText.setStyle(sf::Text::Bold);
@@ -78,11 +78,29 @@ void Game::initialGUI()  // text health bar
 
 void Game::initialBG()
 {
-	if (!this->bgTexture.loadFromFile("Textures/skyy2.png"))
+	if (!this->bgTexture.loadFromFile("Textures/Rsky6800.png"))
 	{
 		std::cout << "ERROR::GAME::COLD NOT LOAD BG TEXTURES" << "\n";
 	}
-	this->background.setTexture(this->bgTexture);
+	this->background.setTexture(&bgTexture);
+	this->background.setSize(sf::Vector2f(6802.f, 900.f));
+	this->background.setPosition(sf::Vector2f(0.f, 0.f));
+
+	
+}
+
+
+void Game::initialBG1()
+{
+	if (!this->bgTexture1.loadFromFile("Textures/Rsky6800.png"))
+	{
+		std::cout << "ERROR::GAME::COLD NOT LOAD BG-1 TEXTURES" << "\n";
+	}
+	this->background1.setTexture(&bgTexture1);
+	this->background1.setSize(sf::Vector2f(6802.f, 900.f));
+	this->background1.setPosition(sf::Vector2f(6800.f, 0.f));
+
+
 }
 
 void Game::initialBGSound()
@@ -93,15 +111,27 @@ void Game::initialBGSound()
 	}
 	// initial bg sound
 	this->music.play();
-	this->music.setVolume(30.f);
+	this->music.setVolume(50.f);
 	this->music.setLoop(true);
 	
+}
+
+void Game::initialBGMenuSound()
+{
+	if (!this->menuMusic.openFromFile("Textures/start.OGG"))
+	{
+		std::cout << "ERROR::GAME::COLD NOT LOAD - start game song - SOUND" << "\n";
+	}
+	// initial bg sound
+	this->menuMusic.play();
+	this->menuMusic.setVolume(100.f);
+	this->menuMusic.setLoop(true);
 }
 
 // Board State
 void Game::initialBGMenu()
 {
-	if (!this->menuTexture.loadFromFile("Textures/menuART001.png"))
+	if (!this->menuTexture.loadFromFile("Textures/menuART.png"))
 	{
 		std::cout << "ERROR::Menu Background ::could not load." << "\n";
 	}
@@ -116,12 +146,12 @@ void Game::initialBGMenu()
 
 void Game::initialBGtype()
 {
-	if (!this->BGtypeTex.loadFromFile("Textures/.png"))
+	if (!this->BGtypeTex.loadFromFile("Textures/typeName.png"))
 	{
 		std::cout << "ERROR::Type Name Background ::could not load." << "\n";
 	}
 
-	//this->menuSprite.setTexture(&menuTexture);
+	this->BGtypeRecShape.setTexture(&BGtypeTex);
 	this->BGtypeRecShape.setSize(sf::Vector2f(
 								static_cast<float>(this->window->getSize().x),
 								static_cast<float>(this->window->getSize().y)
@@ -131,17 +161,18 @@ void Game::initialBGtype()
 
 void Game::initialScoreboard()
 {
-	if (!this->ScoreTex.loadFromFile("Textures/.png"))
+	if (!this->ScoreTex.loadFromFile("Textures/scoreBoard.png"))
 	{
-		std::cout << "ERROR::Scoreboard Background ::could not load." << "\n";
+		std::cout << "ERROR:: -- Scoreboard Background ::could not load." << "\n";
 	}
 
-	//this->menuSprite.setTexture(&menuTexture);
+	this->ScoreRecShape.setTexture(&ScoreTex);
 	this->ScoreRecShape.setSize(sf::Vector2f(
 								static_cast<float>(this->window->getSize().x),
 								static_cast<float>(this->window->getSize().y)
 							)
 							);
+
 }
 
 /* --- PILOT --- */
@@ -171,7 +202,7 @@ void Game::initialBlueEnemy()
 
 void Game::initialPotion()
 {
-	this->PospawnTimerMax = 150.f;
+	this->PospawnTimerMax = 200.f;
 	this->PospawnTimer = this->PospawnTimerMax;
 }
 
@@ -179,6 +210,7 @@ void Game::initialShield()
 {
 	this->ShspawnTimerMax = 400.f;
 	this->ShspawnTimer= this->ShspawnTimerMax;
+
 }
 
 void Game::initialSound()
@@ -204,7 +236,7 @@ void Game::initialHaha()
 	this->haha.setBuffer(this->bufflol);
 
 	this->haha.play();
-	this->haha.setVolume(200.f);
+	this->haha.setVolume(100.f);
 }
 
 void Game::initialHPsound()
@@ -217,7 +249,7 @@ void Game::initialHPsound()
 	this->soundHP.setBuffer(this->buffHP);
 
 	this->soundHP.play();
-	this->soundHP.setVolume(250.f);
+	this->soundHP.setVolume(100.f);
 }
 
 void Game::initialShieldSound()
@@ -230,8 +262,37 @@ void Game::initialShieldSound()
 	this->soundShield.setBuffer(this->buffShield);
 
 	this->soundShield.play();
-	this->soundShield.setVolume(200.f);
+	this->soundShield.setVolume(100.f);
 }
+
+void Game::initialHealSound()
+{
+	if (!this->buffHeal.loadFromFile("Textures/healings.wav"))
+	{
+		std::cout << "ERROR::GAME::COLD NOT LOAD - healing - SOUND" << "\n";
+	}
+	// initial HAHA
+	this->soundHeal.setBuffer(this->buffHeal);
+
+	this->soundHeal.play();
+	this->soundHeal.setVolume(100.f);
+
+}
+
+void Game::initialHurtSound()
+{
+	if (!this->buffHurt.loadFromFile("Textures/oof.wav"))
+	{
+		std::cout << "ERROR::GAME::COLD NOT LOAD - oof - SOUND" << "\n";
+	}
+	// initial HAHA
+	this->soundHurt.setBuffer(this->buffHurt);
+
+	this->soundHurt.play();
+	this->soundHurt.setVolume(100.f);
+
+}
+
 
 void Game::LobThangMod()
 {
@@ -292,6 +353,7 @@ void Game::LobThangMod()
 
 	}
 	this->bullets.clear();		// bullet
+	
 }
 
 void Game::initialSystem()
@@ -307,7 +369,8 @@ void Game::writeFileScore()
 	writer.open("Score.txt", std::fstream::app);
 	if (writer.is_open())
 	{
-		writer << this->playerName << " " << this->points << std::endl;
+
+		writer << this->playerName << "\t" << this->points << std::endl;
 
 		std::cout << "Open File Success!";
 
@@ -322,9 +385,9 @@ void Game::registername()
 {
 	// initial point text --- rectangle box
 
-	this->nameTTT.setSize(sf::Vector2f(750.f, 80.f));
+	this->nameTTT.setSize(sf::Vector2f(805.f, 80.f));
 	this->nameTTT.setOutlineColor(sf::Color::Black);
-	this->nameTTT.setPosition(sf::Vector2f(500.f, 300.f));
+	this->nameTTT.setPosition(sf::Vector2f(450.f, 300.f));
 	
 }
 
@@ -332,14 +395,22 @@ void Game::readFileScore()
 {
 	std::ifstream reader;
 	char a;
+	int i;
 	reader.open("Score.txt", std::fstream::app);
+	
+
+
 	if (reader.is_open())
 	{
+		for (i = 0; i < 5; i++)
+		{
 		//reader >> a;
 		reader >> this->playerName >> this->points;
 
-		std::cout << "Read File Success!";
-		std::cout << "" << this->points << std::endl;
+		std::cout << "Read File Success!" << std::endl;
+		//std::cout << this->playerName << " " << this->points << std::endl;
+		}
+
 
 	}
 	else
@@ -355,19 +426,23 @@ Game::Game()
 	// DISPLAY WINDOW;
 	this->initialWindow();
 
-	// MENU;
+	// MENU; Game Menu;
 	this->initialBGMenu();
+	this->initialScoreboard();
+	this->initialBGtype();
 
 	this->initialTextures();
 
 	// FONT & SCORE;
 	this->initialGUI();
-	this->registername();
+	//this->registername();
 
 	// BACKGROUND;
 	this->initialBG();
-	this, initialBGSound();
-	this->initialSound();
+	this->initialBG1();
+	this->initialBGSound();
+	this->initialBGMenuSound();
+
 
 	this->initialSystem();
 
@@ -440,7 +515,6 @@ void Game::run()
 {
 	while (this->window->isOpen()) // Game run;
 	{
-
 		this->updatePollEvents();
 		if (this->player->getHp() > 0) // If player hp > 0;
 		{
@@ -453,23 +527,24 @@ void Game::run()
 
 
 
+
 void Game::updatePollEvents()
 {
-	sf::Event event;
-	while (this->window->pollEvent(event))
+	while (this->window->pollEvent(this->event))
 	{
-		if (event.Event::type == sf::Event::Closed)
+		if (this->event.Event::type == sf::Event::Closed)
 			this->window->close();
-		if (event.Event::KeyPressed&& event.Event::key.code == sf::Keyboard::Escape)
+		if (this->event.Event::KeyPressed&& this->event.Event::key.code == sf::Keyboard::Escape)
 			this->window->close();
-		if (event.Event::KeyPressed && event.Event::key.code == sf::Keyboard::K || this->clickK)
+
+		if (this->event.Event::KeyPressed && this->event.Event::key.code == sf::Keyboard::Space || this->clickK)
 		{
 			this->clickK = true;
-			if (this->clickK == true && event.type == sf::Event::TextEntered && event.text.unicode < 128)
+			this->blockMenu = true;
+			if (this->clickK == true && this->event.type == sf::Event::TextEntered && this->event.text.unicode < 128)
 			{
-				this->renderScoreboard();		// Scoreboard
-				std::cout << "" << event.key.code << std::endl;
-				switch (event.key.code)
+				std::cout << "" << this->event.key.code << std::endl;
+				switch (this->event.key.code)
 				{
 				case 8: // backspace delete name
 				
@@ -490,30 +565,62 @@ void Game::updatePollEvents()
 					this->clickK = false;
 					this->isGameStart = true;  // check game --- start;
 					this->music.play();
+					this->menuMusic.stop();
 					}
-
-
 				break;
 					
 				default:
-					if (this->playerName.size() > 10)
+					if (this->playerName.size() > 8)
 					{
 						break;
 					}
-					this->playerName += event.text.unicode;
+					this->playerName += this->event.text.unicode;
 					this->playerText.setString(this->playerName);
 				}
 				
 			}
 
 		}
-		if (event.Event::KeyPressed && event.Event::key.code == sf::Keyboard::U)
+		if (this->event.Event::KeyPressed && this->event.Event::key.code == sf::Keyboard::F1)
 		{
+			this->KhamSang = 1;
+			this->blockMenu = true;
 			this->isGameStart = false; // check game --- close;
 			this->player->gotShield = false;
 			this->LobThangMod();
 			this->player->setPosition(0.f, 450.f);
+			this->menuMusic.play();
 		}
+
+		if (this->isGameStart == false)
+		{
+			if (this->event.Event::KeyPressed && this->event.Event::key.code == sf::Keyboard::Space)
+			{
+				this->blockMenu = true;
+				this->KhamSang = 5;
+			}
+				
+			if (this->blockMenu == false)
+			{
+				if (this->event.Event::KeyPressed && this->event.Event::key.code == sf::Keyboard::Z)	// score
+				{
+					this->KhamSang = 2;
+					this->isGameStart = false;
+				}
+				if (this->event.Event::KeyPressed && this->event.Event::key.code == sf::Keyboard::X)	// credit
+				{
+					this->KhamSang = 3;
+					this->isGameStart = false;
+				}
+				if (this->event.Event::KeyPressed && this->event.Event::key.code == sf::Keyboard::C)	// how to play
+				{
+					this->KhamSang = 4;
+					this->isGameStart = false;
+				}
+			}
+
+		}
+
 
 		
 	}
@@ -541,10 +648,11 @@ void Game::updateGUI() // text or can change
 	// TEXT
 		std::stringstream ss;
 		std::stringstream sc;
-		ss << "Points: " << this->points;
+
+		ss << this->playerName << "  Points: " << this->points;
 		this->pointText.setString(ss.str());
 
-		sc << "Your Score :" << this->points;
+		sc << this->playerName << " : " << this->points;
 		this->results.setString(sc.str());
 
 	// HP
@@ -623,6 +731,7 @@ void Game::updateEnemies() // yellow flappy
 			// delete enemy W H I L E   H I T   T H E   P L A Y E R 
 			if (this->haveShield == false)
 			{
+				this->initialHurtSound();
 				this->player->loseHP(this->enemies.at(Fcounter)->getDamage());
 				delete this->enemies.at(Fcounter);
 				this->enemies.erase(this->enemies.begin() + Fcounter);
@@ -674,6 +783,7 @@ void Game::updateRedEnemy() // red bird
 			// delete enemy W H I L E   H I T   T H E   P L A Y E R 
 			if (this->haveShield == false)
 			{
+				this->initialHurtSound();
 				this->player->loseHP(this->redenemy.at(Rcounter)->getDamage());
 				delete this->redenemy.at(Rcounter);
 				this->redenemy.erase(this->redenemy.begin() + Rcounter);
@@ -721,6 +831,7 @@ void Game::updateBlueEnemy()
 		// Enemies & Player colission
 		else if (blueenem->getBounds().intersects(this->player->getBounds()))
 		{
+			this->initialHurtSound();
 			// delete enemy W H I L E   H I T   T H E   P L A Y E R 
 			if (this->haveShield == false)
 			{
@@ -745,13 +856,17 @@ void Game::updateBlueEnemy()
 void Game::updatePotion() // potion
 {
 	// potion spawning
-	this->PospawnTimer += 0.1f;
-	if (this->PospawnTimer >= this->PospawnTimerMax)
+	if (this->points < 1000)
 	{
-		this->potion.push_back(new Potion(1700.f, rand() % this->window->getSize().y + 100.f));
-		this->PospawnTimer = 0.f;
+		this->PospawnTimer += 0.1f;
+		if (this->PospawnTimer >= this->PospawnTimerMax)
+		{
+			this->potion.push_back(new Potion(1700.f, rand() % this->window->getSize().y + 100.f));
+			this->PospawnTimer = 0.f;
 
+		}
 	}
+
 
 	// update
 	unsigned Pcounter = 0;
@@ -771,6 +886,7 @@ void Game::updatePotion() // potion
 		// Enemies & Player colission
 		else if (pot->getBounds().intersects(this->player->getBounds()))
 		{
+			this->initialHealSound();
 			// delete enemy W H I L E   H I T   T H E   P L A Y E R 
 			this->player->loseHP(this->potion.at(Pcounter)->getDamage());
 			delete this->potion.at(Pcounter);
@@ -983,6 +1099,11 @@ void Game::renderBG()
 	this->window->draw(this->background);
 }
 
+void Game::renderBG1()
+{
+	this->window->draw(this->background1);
+}
+
 void Game::renderGUI()
 {
 	// TEXT
@@ -1000,6 +1121,63 @@ void Game::renderBGMenu()
 	this->window->draw(this->menuSprite);
 }
 
+void Game::updateAndSaveScore()
+{
+	typedef struct NameWithScore {
+		std::string name;
+		int score;
+	} NameWithScore;
+
+	auto compareScores = [](NameWithScore p_1, NameWithScore p_2) {
+		return p_1.score > p_2.score;
+	};
+
+	std::vector<NameWithScore> namesWithScore;
+
+	NameWithScore currentPlayer;
+	currentPlayer.name = this->playerName;
+	currentPlayer.score = this->points;
+
+	namesWithScore.push_back(currentPlayer);
+
+	std::ifstream ifs("Score.txt");
+
+	if (ifs.is_open())
+	{
+		std::string playerName1 = "";
+		std::string playerScore = "";
+
+		while (ifs >> playerName1 >> playerScore)
+		{
+			//std::cout << "name0 ---> " << playerName1 << std::endl;
+			//std::cout << "score0 ---> " << playerScore << std::endl;
+			NameWithScore temp;
+			temp.name = playerName1;
+			temp.score = std::stoi(playerScore);
+			namesWithScore.push_back(temp);
+		}
+
+
+	}
+
+	ifs.close();
+
+	std::sort(namesWithScore.begin(), namesWithScore.end(), compareScores);
+
+	std::fstream ofs;
+
+	ofs.open("Score.txt", std::ios::out | std::ios::trunc);
+
+	for (auto nameWithScore : namesWithScore) {
+		//std::cout << "name ---> " << nameWithScore.name << std::endl;
+		//std::cout << "score ---> " << nameWithScore.score << std::endl;
+
+		ofs << nameWithScore.name + "\t" + std::to_string(nameWithScore.score) + "\n";
+	}
+
+	ofs.close();
+}
+
 void Game::renderBGtype()
 {
 	this->window->draw(this->BGtypeRecShape);
@@ -1009,6 +1187,8 @@ void Game::renderScoreboard()
 {
 	this->window->draw(this->ScoreRecShape);
 }
+
+
 
 /*CLOSE WINDOW*/
 void Game::update()
@@ -1054,7 +1234,7 @@ void Game::renderNameBoxAndText()
 {
 	if (this->clickK) //  == true จริงถึงจะเข้า
 	{
-		this->window->draw(this->nameTTT);
+		//this->window->draw(this->nameTTT);
 		this->window->draw(this->playerText);
 	}
 }
@@ -1081,20 +1261,59 @@ void Game::render() //render player
 
 	/*draw space*/
 
-	if (!this->isGameStart) // game start
+	if (!this->isGameStart) // game not start yet
 	{
-		this->renderBGMenu();			// BGMenu
-		this->renderNameBoxAndText();
-		this->music.stop();
+		
+		if (this->KhamSang == 1)
+		{
+			this->renderBGMenu();			// BGMenu
+			this->music.stop();
+
+		}	
+		if (this->KhamSang == 2)			// HighScore
+		{
+			this->window->draw(this->ScoreRecShape);
+
+
+			this->LobThangMod();
+			this->music.stop();
+
+		}
+		if (this->KhamSang == 3)			// Credit
+		{
+			//this->window->draw(this->BGtypeRecShape);
+			this->LobThangMod();
+			this->music.stop();
+
+		}
+		if (this->KhamSang == 5)			// Bgtype
+		{
+			this->renderBGtype();
+			this->renderNameBoxAndText();
+			this->LobThangMod();
+			this->music.stop();
+
+		}
+
 	}
 	
 	else
 	{
+		
 		this->renderBG();	  // BG
+		this->renderBG1();	  // BG1
 		this->renderPlayer(); // pilot
 		this->renderGUI();	  // text health bar
-
-
+		this->background.move(-1.5f, 0.f);
+		this->background1.move(-1.5f, 0.f);
+		if (this->background.getPosition().x < -6800.f)
+		{
+			this->background.setPosition(6800.f, 0.f);
+		}
+		if (this->background1.getPosition().x < -6800.f)
+		{
+			this->background1.setPosition(6800.f, 0.f);
+		}
 		for (auto* bullet : this->bullets)		// bullets
 		{
 			bullet->render(this->window);
@@ -1124,23 +1343,37 @@ void Game::render() //render player
 		/*display*/
 
 		//game over
+		
 		if (this->player->getHp() <= 0)
 		{
-
-			this->window->draw(this->gameOverText);
+			this->renderScoreboard();		// Scoreboard
+			//this->writeFileScore();
+			this->readFileScore();
+			
+			//this->window->draw(this->gameOverText);
 			this->window->draw(this->results);
 
-			this->renderScoreboard();		// Scoreboard
-			this->writeFileScore();
-			this->readFileScore();
-
+			
 			this->music.stop();
-			this->initialHaha();
-
+			this->initialHaha(); 
+			this->updateAndSaveScore();
+			this->playerName.clear();
+			if (this->KhamSang == 2)
+			{
+				this->window->draw(this->ScoreRecShape);
+				this->music.stop();
+			}
+			/*if (this->KhamSang == 5)
+			{
+				this->window->draw(this->BGtypeRecShape);
+				this->music.stop();
+			}*/
 		}
-
+		
 
 	}
+
+	
 	this->window->display();
 }
 

@@ -9,7 +9,7 @@ void Shield::initialVariables()
 	this->damage = 0;
 	this->points = 10;
 
-	this->speed = 2.f;
+	this->speed = 4.f;
 	this->ShieldMove = false;
 }
 

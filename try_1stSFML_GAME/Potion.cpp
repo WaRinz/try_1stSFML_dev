@@ -9,7 +9,7 @@ void Potion::initialVariables()
 	this->damage = -20;
 	this->points = 200;
 
-	this->speed = 1.f;
+	this->speed = 4.f;
 }
 
 void Potion::initialTexture()
