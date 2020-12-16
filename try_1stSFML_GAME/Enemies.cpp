@@ -6,10 +6,10 @@ void Enemies::initialVariables()
 	this->type		= 0;
 	this->hpmax		= static_cast<int>(this->pointCount);
 	this->hp		= this->hpmax;
-	this->damage	= 20;
+	this->damage	= 40;
 	this->points	= 50;
 
-	this->speed		= 7.f;
+	this->speed		= 8.f;
 }
 
 void Enemies::initialTexture()

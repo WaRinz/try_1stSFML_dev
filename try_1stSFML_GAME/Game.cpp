@@ -36,13 +36,14 @@ void Game::initialGUI()  // text health bar
 	// initial point text
 	this->pointText.setPosition(sf::Vector2f(50.f, 5.f));
 	this->pointText.setFont(this->font);
-	this->pointText.setCharacterSize(30);
+	this->pointText.setCharacterSize(50);
 	this->pointText.setFillColor(sf::Color::Black);
-	this->pointText.setString("- for point -");
-	this->pointText.setStyle(sf::Text::Bold);
+	this->pointText.setString("");
+	this->pointText.setStyle(sf::Text::Regular);
+	this->pointText.setStyle(sf::Text::Underlined);
 
 	// gameOver Text
-	this->gameOverText.setPosition(sf::Vector2f(650.f, 350.f));
+	this->gameOverText.setPosition(sf::Vector2f(600.f, 330.f));
 	this->gameOverText.setFont(this->font);
 	this->gameOverText.setCharacterSize(90);
 	this->gameOverText.setFillColor(sf::Color::Red);
@@ -50,12 +51,22 @@ void Game::initialGUI()  // text health bar
 	this->gameOverText.setStyle(sf::Text::Bold);
 
 	// Show results ---> SCORE
-	this->results.setPosition(sf::Vector2f(150.f, 760.f));
+	this->results.setPosition(sf::Vector2f(540.f, 260.f));
 	this->results.setFont(this->font);
 	this->results.setCharacterSize(70);
 	this->results.setFillColor(sf::Color::Black);
 	this->results.setString(" score ");
 	this->results.setStyle(sf::Text::Regular);
+
+	// Show played score ---> SCORE
+	this->NowScore.setPosition(sf::Vector2f(150.f, 770.f));
+	this->NowScore.setFont(this->font);
+	this->NowScore.setCharacterSize(70);
+	this->NowScore.setFillColor(sf::Color::Black);
+	this->NowScore.setString(" NowScore ");
+	this->NowScore.setStyle(sf::Text::Regular);
+
+
 
 	// initial HP
 	this->playerHpBar.setSize(sf::Vector2f(500.f, 30.f));
@@ -72,8 +83,50 @@ void Game::initialGUI()  // text health bar
 	this->playerText.setFont(this->font);
 	this->playerText.setCharacterSize(100);
 	this->playerText.setFillColor(sf::Color::Black);
-	this->playerText.setString("- for point -");
+	this->playerText.setString("");
 	this->playerText.setStyle(sf::Text::Bold);
+
+
+
+
+	// score board style text
+
+			/*this->KhaNaen[0][0].setPosition(sf::Vector2f(800.f, 100.f));
+			this->KhaNaen[0][0].setFont(this->font);
+			this->KhaNaen[0][0].setCharacterSize(100);
+			this->KhaNaen[0][0].setFillColor(sf::Color::Black);
+			this->KhaNaen[0][0].setString(this->GaebKhaNaen[0][0]);
+			this->KhaNaen[0][0].setStyle(sf::Text::Regular);
+
+			
+
+			this->KhaNaen[0][1].setPosition(sf::Vector2f(800.f, 100.f));
+			this->KhaNaen[1][0].setPosition(sf::Vector2f(400.f, 100.f));
+			this->KhaNaen[1][1].setPosition(sf::Vector2f(400.f, 100.f));
+			this->KhaNaen[2][0].setPosition(sf::Vector2f(1200.f, 100.f));
+			this->KhaNaen[2][1].setPosition(sf::Vector2f(1200.f, 100.f));
+			this->KhaNaen[3][0].setPosition(sf::Vector2f(400.f, 100.f));
+			this->KhaNaen[3][1].setPosition(sf::Vector2f(400.f, 100.f));
+			this->KhaNaen[4][0].setPosition(sf::Vector2f(1200.f, 100.f));
+			this->KhaNaen[4][1].setPosition(sf::Vector2f(1200.f, 100.f));*/
+
+	    
+	// text = 0 / score = 1;
+
+
+	/*for (int rank = 0; rank < 5; rank++)
+	{
+		for (int scoree = 0; scoree < 2; scoree++)
+		{
+			this->KhaNaen[rank][scoree].setFont(this->font);
+			this->KhaNaen[rank][scoree].setCharacterSize(20);
+			this->KhaNaen[rank][scoree].setFillColor(sf::Color::Black);
+			this->KhaNaen[rank][scoree].setString(this->GaebKhaNaen[0][1]);
+			this->KhaNaen[rank][scoree].setStyle(sf::Text::Regular);
+		}
+	}*/
+
+
 }
 
 void Game::initialBG()
@@ -161,7 +214,7 @@ void Game::initialBGtype()
 
 void Game::initialScoreboard()
 {
-	if (!this->ScoreTex.loadFromFile("Textures/scoreBoard.png"))
+	if (!this->ScoreTex.loadFromFile("Textures/boardA.png"))
 	{
 		std::cout << "ERROR:: -- Scoreboard Background ::could not load." << "\n";
 	}
@@ -175,6 +228,35 @@ void Game::initialScoreboard()
 
 }
 
+void Game::initialHowTo()
+{
+	if (!this->HowTex.loadFromFile("Textures/howtoP.png"))
+	{
+		std::cout << "ERROR:: --How To Play ::could not load." << "\n";
+	}
+
+	this->HowRecShape.setTexture(&HowTex);
+	this->HowRecShape.setSize(sf::Vector2f(
+		static_cast<float>(this->window->getSize().x),
+		static_cast<float>(this->window->getSize().y)
+	)
+	);
+}
+
+void Game::initialCredit()
+{
+	if (!this->CreTex.loadFromFile("Textures/creditA.png"))
+	{
+		std::cout << "ERROR:: --How To Play ::could not load." << "\n";
+	}
+
+	this->CreRecShape.setTexture(&CreTex);
+	this->CreRecShape.setSize(sf::Vector2f(
+		static_cast<float>(this->window->getSize().x),
+		static_cast<float>(this->window->getSize().y)
+	)
+	);
+}
 /* --- PILOT --- */
 void Game::initialPlayer()
 {
@@ -267,7 +349,7 @@ void Game::initialShieldSound()
 
 void Game::initialHealSound()
 {
-	if (!this->buffHeal.loadFromFile("Textures/healings.wav"))
+	if (!this->buffHeal.loadFromFile("Textures/healing.wav"))
 	{
 		std::cout << "ERROR::GAME::COLD NOT LOAD - healing - SOUND" << "\n";
 	}
@@ -275,7 +357,7 @@ void Game::initialHealSound()
 	this->soundHeal.setBuffer(this->buffHeal);
 
 	this->soundHeal.play();
-	this->soundHeal.setVolume(100.f);
+	this->soundHeal.setVolume(75.f);
 
 }
 
@@ -291,6 +373,44 @@ void Game::initialHurtSound()
 	this->soundHurt.play();
 	this->soundHurt.setVolume(100.f);
 
+}
+void Game::initialFlappySound()
+{
+	if (!this->buffFlappy.loadFromFile("Textures/flappysong.wav"))
+	{
+		std::cout << "ERROR::GAME::COLD NOT LOAD - flappy die - SOUND" << "\n";
+	}
+	// initial HAHA
+	this->soundFlappy.setBuffer(this->buffFlappy);
+
+	this->soundFlappy.play();
+	this->soundFlappy.setVolume(100.f);
+}
+
+void Game::initialBlueSound()
+{
+	if (!this->buffBlue.loadFromFile("Textures/bluesong.wav"))
+	{
+		std::cout << "ERROR::GAME::COLD NOT LOAD - blue bird die - SOUND" << "\n";
+	}
+	// initial HAHA
+	this->soundBlue.setBuffer(this->buffBlue);
+
+	this->soundBlue.play();
+	this->soundBlue.setVolume(100.f);
+}
+
+void Game::initialRedSound()
+{
+	if (!this->buffRed.loadFromFile("Textures/redsong.wav"))
+	{
+		std::cout << "ERROR::GAME::COLD NOT LOAD - blue bird die - SOUND" << "\n";
+	}
+	// initial HAHA
+	this->soundRed.setBuffer(this->buffRed);
+
+	this->soundRed.play();
+	this->soundRed.setVolume(50.f);
 }
 
 
@@ -393,8 +513,9 @@ void Game::registername()
 
 void Game::readFileScore()
 {
+	std::stringstream zz;
 	std::ifstream reader;
-	char a;
+	//char a;
 	int i;
 	reader.open("Score.txt", std::fstream::app);
 	
@@ -405,18 +526,51 @@ void Game::readFileScore()
 		for (i = 0; i < 5; i++)
 		{
 		//reader >> a;
-		reader >> this->playerName >> this->points;
+		//reader >> this->playerName >> this->points;
+			std::vector<std::string> temp;
+			temp.push_back("NULL");
+			temp.push_back("NULL");
 
+			reader >> temp[0] >> temp[1];
+			GaebKhaNaen.push_back(temp);
 		std::cout << "Read File Success!" << std::endl;
 		//std::cout << this->playerName << " " << this->points << std::endl;
+		
 		}
+		for(int j = 0; j < 5; j++)
+		{
+			std::cout << this->GaebKhaNaen[j][0] ;
+			std::cout << this->GaebKhaNaen[j][1] << std::endl;
+		}
+		// test what player's score should display on game
+		zz << this->GaebKhaNaen[0][0] + "\t" + "\t" + "\t" + "\t";
+		zz << this->GaebKhaNaen[0][1] << std::endl;
+
+		zz << this->GaebKhaNaen[1][0] + "\t" + "\t" + "\t" + "\t";
+		zz << this->GaebKhaNaen[1][1] << std::endl;
+
+		zz << this->GaebKhaNaen[2][0] + "\t" + "\t" + "\t" + "\t";
+		zz << this->GaebKhaNaen[2][1] << std::endl;
+
+		zz << this->GaebKhaNaen[3][0] + "\t" + "\t" + "\t" + "\t";
+		zz << this->GaebKhaNaen[3][1] << std::endl;
+
+		zz << this->GaebKhaNaen[4][0] + "\t" + "\t" + "\t" + "\t";
+		zz << this->GaebKhaNaen[4][1] << std::endl;
 
 
+		
+		
+		this->results.setString(zz.str());
+
+			//sc << this->playerName << " : " << this->points;
+		
 	}
 	else
 	{
 		std::cout << "Cannot Read File!";
 	}
+	reader.close();
 }
 
 
@@ -428,6 +582,9 @@ Game::Game()
 
 	// MENU; Game Menu;
 	this->initialBGMenu();
+	this->initialHowTo();
+	this->initialCredit();
+
 	this->initialScoreboard();
 	this->initialBGtype();
 
@@ -537,7 +694,7 @@ void Game::updatePollEvents()
 		if (this->event.Event::KeyPressed&& this->event.Event::key.code == sf::Keyboard::Escape)
 			this->window->close();
 
-		if (this->event.Event::KeyPressed && this->event.Event::key.code == sf::Keyboard::Space || this->clickK)
+		if (this->event.Event::KeyPressed && this->event.Event::key.code == sf::Keyboard::F2 || this->clickK)
 		{
 			this->clickK = true;
 			this->blockMenu = true;
@@ -570,7 +727,7 @@ void Game::updatePollEvents()
 				break;
 					
 				default:
-					if (this->playerName.size() > 8)
+					if (this->playerName.size() > 5)
 					{
 						break;
 					}
@@ -590,29 +747,31 @@ void Game::updatePollEvents()
 			this->LobThangMod();
 			this->player->setPosition(0.f, 450.f);
 			this->menuMusic.play();
+
+
 		}
 
 		if (this->isGameStart == false)
 		{
-			if (this->event.Event::KeyPressed && this->event.Event::key.code == sf::Keyboard::Space)
+			if (this->event.Event::KeyPressed && this->event.Event::key.code == sf::Keyboard::F2)
 			{
 				this->blockMenu = true;
 				this->KhamSang = 5;
 			}
 				
-			if (this->blockMenu == false)
+			if (this->blockMenu == true)
 			{
-				if (this->event.Event::KeyPressed && this->event.Event::key.code == sf::Keyboard::Z)	// score
+				if (this->event.Event::KeyPressed && this->event.Event::key.code == sf::Keyboard::F3)	// How To Play
 				{
 					this->KhamSang = 2;
 					this->isGameStart = false;
 				}
-				if (this->event.Event::KeyPressed && this->event.Event::key.code == sf::Keyboard::X)	// credit
+				if (this->event.Event::KeyPressed && this->event.Event::key.code == sf::Keyboard::F4)	// Credit
 				{
 					this->KhamSang = 3;
 					this->isGameStart = false;
 				}
-				if (this->event.Event::KeyPressed && this->event.Event::key.code == sf::Keyboard::C)	// how to play
+				if (this->event.Event::KeyPressed && this->event.Event::key.code == sf::Keyboard::C)
 				{
 					this->KhamSang = 4;
 					this->isGameStart = false;
@@ -653,7 +812,8 @@ void Game::updateGUI() // text or can change
 		this->pointText.setString(ss.str());
 
 		sc << this->playerName << " : " << this->points;
-		this->results.setString(sc.str());
+		this->NowScore.setString(sc.str());
+
 
 	// HP
 		float hpPercent = static_cast<float>(this->player->getHp()) / this->player->getHpMax();
@@ -671,6 +831,7 @@ void Game::updateBGSound()
 {
 
 }
+
 
 /*void Game::updateMousePos()
 {
@@ -967,6 +1128,7 @@ void Game::updateCombat() // Shooting & Get Points ----- After shooting diaapear
 
 			if (this->bullets[k]->getBounds().intersects(this->enemies[i]->getBounds())) // IF bullet touch the enemies
 			{
+				this->initialFlappySound();
 				this->points += this->enemies[i]->getPoints();
 
 				this->bullets.erase(this->bullets.begin() + k);
@@ -988,6 +1150,7 @@ void Game::updateCombat() // Shooting & Get Points ----- After shooting diaapear
 
 			if (this->bullets[Rk]->getBounds().intersects(this->redenemy[Ri]->getBounds())) // IF bullet touch the enemies
 			{
+				this->initialRedSound();
 				this->points += this->redenemy[Ri]->getPoints();
 
 				this->bullets.erase(this->bullets.begin() + Rk);
@@ -1009,6 +1172,7 @@ void Game::updateCombat() // Shooting & Get Points ----- After shooting diaapear
 
 			if (this->bullets[Bk]->getBounds().intersects(this->blueenemy[Bi]->getBounds())) // IF bullet touch the enemies
 			{
+				this->initialBlueSound();
 				this->points += this->blueenemy[Bi]->getPoints();
 
 				this->bullets.erase(this->bullets.begin() + Bk);
@@ -1099,10 +1263,22 @@ void Game::renderBG()
 	this->window->draw(this->background);
 }
 
+
 void Game::renderBG1()
 {
 	this->window->draw(this->background1);
 }
+
+void Game::renderHowTo()
+{
+	this->window->draw(this->HowRecShape);
+}
+
+void Game::renderCredit()
+{
+	this->window->draw(this->CreRecShape);
+}
+
 
 void Game::renderGUI()
 {
@@ -1144,6 +1320,7 @@ void Game::updateAndSaveScore()
 
 	if (ifs.is_open())
 	{
+		
 		std::string playerName1 = "";
 		std::string playerScore = "";
 
@@ -1155,7 +1332,13 @@ void Game::updateAndSaveScore()
 			temp.name = playerName1;
 			temp.score = std::stoi(playerScore);
 			namesWithScore.push_back(temp);
+		
+			
 		}
+		
+		
+
+
 
 
 	}
@@ -1266,13 +1449,15 @@ void Game::render() //render player
 		
 		if (this->KhamSang == 1)
 		{
+			this->playerName.clear();
 			this->renderBGMenu();			// BGMenu
 			this->music.stop();
 
 		}	
-		if (this->KhamSang == 2)			// HighScore
+		if (this->KhamSang == 2)			// How To Play
 		{
-			this->window->draw(this->ScoreRecShape);
+			this->playerName.clear();
+			this->renderHowTo();
 
 
 			this->LobThangMod();
@@ -1281,7 +1466,10 @@ void Game::render() //render player
 		}
 		if (this->KhamSang == 3)			// Credit
 		{
-			//this->window->draw(this->BGtypeRecShape);
+			this->playerName.clear();
+			this->renderCredit();
+
+
 			this->LobThangMod();
 			this->music.stop();
 
@@ -1348,15 +1536,20 @@ void Game::render() //render player
 		{
 			this->renderScoreboard();		// Scoreboard
 			//this->writeFileScore();
+			this->updateAndSaveScore();
+			
 			this->readFileScore();
 			
 			//this->window->draw(this->gameOverText);
 			this->window->draw(this->results);
+			this->window->draw(this->NowScore);
+			
+			//this->window->draw(this->KhaNaen[0][0]);
 
 			
 			this->music.stop();
 			this->initialHaha(); 
-			this->updateAndSaveScore();
+			
 			this->playerName.clear();
 			if (this->KhamSang == 2)
 			{

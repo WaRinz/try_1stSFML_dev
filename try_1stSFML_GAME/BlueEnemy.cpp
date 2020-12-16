@@ -6,10 +6,10 @@ void BlueEnemy::initialVariables()
 	this->type = 0;
 	this->hpmax = static_cast<int>(this->pointCount);
 	this->hp = this->hpmax;
-	this->damage = 10.f;
+	this->damage = 20.f;
 	this->points = 15.f;
 
-	this->speed = 4.f;
+	this->speed = 6.f;
 	this->BlueMove = false;
 }
 

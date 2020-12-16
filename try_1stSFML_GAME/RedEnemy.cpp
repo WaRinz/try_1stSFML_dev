@@ -6,10 +6,10 @@ void RedEnemy::initialVariables()
 	this->type = 0;
 	this->hpmax = static_cast<int>(this->pointCount);
 	this->hp = this->hpmax;
-	this->damage = 5;
+	this->damage = 10;
 	this->points = 5;
 
-	this->speed = 3.f;
+	this->speed = 4.f;
 	this->RedMove = false;
 }
 

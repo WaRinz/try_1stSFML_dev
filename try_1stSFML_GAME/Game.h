@@ -56,7 +56,7 @@ private:
 
 	// your score :
 	sf::Text results;
-
+	sf::Text NowScore;
 
 	// S Y S T E M  -------  SCORE
 	int points;
@@ -66,47 +66,10 @@ private:
 	bool clickK = false;
 	bool blockMenu = false;
 
-	std::vector<std::vector<std::string>> GebKhaNaen;
-
 	sf::RectangleShape nameTTT;
 
 	std::string playerName = "";
 	sf::Text playerText;
-	
-	// SOUND hit
-	sf::SoundBuffer buffer;
-	sf::Sound sound;
-		// game over haha
-		sf::SoundBuffer bufflol;
-		sf::Sound haha;
-		
-		// HP Potion break
-		sf::SoundBuffer buffHP;
-		sf::Sound soundHP;
-
-		// Touch potion
-		sf::SoundBuffer buffHeal;
-		sf::Sound soundHeal;
-
-		// Take damage
-		sf::SoundBuffer buffHurt;
-		sf::Sound soundHurt;
-
-		// Shield block
-		sf::SoundBuffer buffShield;
-		sf::Sound soundShield;
-
-
-	// BG music
-	sf::Music music;
-	sf::Music menuMusic;
-
-	// BG
-	sf::Texture bgTexture;
-	sf::RectangleShape background;
-	sf::Texture bgTexture1;
-	sf::RectangleShape background1;
-
 
 	// --- MENU ----
 		
@@ -122,6 +85,14 @@ private:
 		// Scoreboard
 		sf::Texture ScoreTex;
 		sf::RectangleShape ScoreRecShape;
+
+		// How To
+		sf::Texture HowTex;
+		sf::RectangleShape HowRecShape;
+
+		// Credits
+		sf::Texture CreTex;
+		sf::RectangleShape CreRecShape;
 
 
 		
@@ -166,6 +137,59 @@ private:
 	float ShspawnTimerMax;
 	std::vector<Shield*> shield;
 
+	/* SLIME --- GREEN SLIME */
+	float Slspawntimer;
+	float Slspawntimermax;
+	//std::vector<Slime*> slime;
+
+	/* Separate text */
+	std::vector<std::vector<std::string>> GaebKhaNaen;
+	sf::Text KhaNaen[5][5];
+
+	// SOUND hit
+	sf::SoundBuffer buffer;
+	sf::Sound sound;
+	// game over haha
+	sf::SoundBuffer bufflol;
+	sf::Sound haha;
+
+	// HP Potion break
+	sf::SoundBuffer buffHP;
+	sf::Sound soundHP;
+
+	// Touch potion
+	sf::SoundBuffer buffHeal;
+	sf::Sound soundHeal;
+
+	// Take damage
+	sf::SoundBuffer buffHurt;
+	sf::Sound soundHurt;
+
+	// Shield block
+	sf::SoundBuffer buffShield;
+	sf::Sound soundShield;
+
+	// Blue Die
+	sf::SoundBuffer buffBlue;
+	sf::Sound soundBlue;
+
+	// Flappy Die
+	sf::SoundBuffer buffFlappy;
+	sf::Sound soundFlappy;
+
+	// Red Die
+	sf::SoundBuffer buffRed;
+	sf::Sound soundRed;
+
+	// BG music
+	sf::Music music;
+	sf::Music menuMusic;
+
+	// BG
+	sf::Texture bgTexture;
+	sf::RectangleShape background;
+	sf::Texture bgTexture1;
+	sf::RectangleShape background1;
 
 
 	void initialWindow();
@@ -180,6 +204,8 @@ private:
 	// Board State
 	void initialBGMenu();
 	void initialBGtype();
+	void initialHowTo();
+	void initialCredit();
 	void initialScoreboard();
 	void registername();
 
@@ -197,6 +223,9 @@ private:
 
 	void initialSound();
 	void initialHaha();
+	void initialFlappySound();
+	void initialRedSound();
+	void initialBlueSound();
 	void initialHPsound();
 	void initialHealSound();
 	void initialHurtSound();
@@ -260,12 +289,17 @@ public:
 	void renderBG();
 	void renderBG1();
 
+	// show score number
+	void showSCnum();
+
 	// import font text & health bar
 	void renderGUI();
 
 	// import board
 	void renderBGMenu();
 	void renderBGtype();
+	void renderHowTo();
+	void renderCredit();
 	void renderScoreboard();
 
 	// textNameBox
