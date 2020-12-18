@@ -1,3 +1,4 @@
+gogo	1670
 mumi	1305
 dodo	1265
 lulu	1220
@@ -8,4 +9,6 @@ asoe	945
 koko	835
 aati	835
 lkas	655
+koko	495
+koko	360
 alg;s	0

@@ -164,7 +164,7 @@ void Game::initialBGSound()
 	}
 	// initial bg sound
 	this->music.play();
-	this->music.setVolume(50.f);
+	this->music.setVolume(10.f);
 	this->music.setLoop(true);
 	
 }
@@ -177,7 +177,7 @@ void Game::initialBGMenuSound()
 	}
 	// initial bg sound
 	this->menuMusic.play();
-	this->menuMusic.setVolume(100.f);
+	this->menuMusic.setVolume(30.f);
 	this->menuMusic.setLoop(true);
 }
 
@@ -305,7 +305,7 @@ void Game::initialSound()
 	this->sound.setBuffer(this->buffer);
 
 	this->sound.play();
-	this->sound.setVolume(80.f);
+	this->sound.setVolume(10.f);
 }
 
 void Game::initialHaha()
@@ -318,7 +318,7 @@ void Game::initialHaha()
 	this->haha.setBuffer(this->bufflol);
 
 	this->haha.play();
-	this->haha.setVolume(100.f);
+	this->haha.setVolume(30.f);
 }
 
 void Game::initialHPsound()
@@ -331,7 +331,7 @@ void Game::initialHPsound()
 	this->soundHP.setBuffer(this->buffHP);
 
 	this->soundHP.play();
-	this->soundHP.setVolume(100.f);
+	this->soundHP.setVolume(30.f);
 }
 
 void Game::initialShieldSound()
@@ -344,7 +344,7 @@ void Game::initialShieldSound()
 	this->soundShield.setBuffer(this->buffShield);
 
 	this->soundShield.play();
-	this->soundShield.setVolume(100.f);
+	this->soundShield.setVolume(30.f);
 }
 
 void Game::initialHealSound()
@@ -357,7 +357,7 @@ void Game::initialHealSound()
 	this->soundHeal.setBuffer(this->buffHeal);
 
 	this->soundHeal.play();
-	this->soundHeal.setVolume(75.f);
+	this->soundHeal.setVolume(35.f);
 
 }
 
@@ -371,7 +371,7 @@ void Game::initialHurtSound()
 	this->soundHurt.setBuffer(this->buffHurt);
 
 	this->soundHurt.play();
-	this->soundHurt.setVolume(100.f);
+	this->soundHurt.setVolume(30.f);
 
 }
 void Game::initialFlappySound()
@@ -384,7 +384,7 @@ void Game::initialFlappySound()
 	this->soundFlappy.setBuffer(this->buffFlappy);
 
 	this->soundFlappy.play();
-	this->soundFlappy.setVolume(100.f);
+	this->soundFlappy.setVolume(30.f);
 }
 
 void Game::initialBlueSound()
@@ -397,7 +397,7 @@ void Game::initialBlueSound()
 	this->soundBlue.setBuffer(this->buffBlue);
 
 	this->soundBlue.play();
-	this->soundBlue.setVolume(100.f);
+	this->soundBlue.setVolume(30.f);
 }
 
 void Game::initialRedSound()
@@ -410,7 +410,7 @@ void Game::initialRedSound()
 	this->soundRed.setBuffer(this->buffRed);
 
 	this->soundRed.play();
-	this->soundRed.setVolume(50.f);
+	this->soundRed.setVolume(20.f);
 }
 
 
